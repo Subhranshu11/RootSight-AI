@@ -16,7 +16,9 @@ from datetime import datetime
 
 load_dotenv()
 
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+import streamlit as st
+
+GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
 
 # -----------------------------------
 # PATHS
