@@ -14,11 +14,10 @@ from datetime import datetime
 # LOAD ENV VARIABLES
 # -----------------------------------
 
-load_dotenv()
-
 import streamlit as st
 
 GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+
 # -----------------------------------
 # PATHS
 # -----------------------------------
