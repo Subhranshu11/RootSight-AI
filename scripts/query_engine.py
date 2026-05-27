@@ -143,10 +143,6 @@ Provide response in this format:
     # -----------------------------------
 
     return response.choices[0].message.content
-# -----------------------------------
-# ADD NEW INCIDENT TO KNOWLEDGE BASE
-# -----------------------------------
-
 
 # -----------------------------------
 # ADD NEW INCIDENT TO KNOWLEDGE BASE
