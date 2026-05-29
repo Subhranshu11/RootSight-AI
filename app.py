@@ -10,7 +10,7 @@ from scripts.query_engine import (
 # -----------------------------------
 
 st.set_page_config(
-    page_title="ReportOps AI Copilot",
+    page_title="ReportOps Copilot",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded"
