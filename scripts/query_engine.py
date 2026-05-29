@@ -2,22 +2,82 @@ import os
 import pickle
 import faiss
 import numpy as np
-
-from groq import Groq
-from sentence_transformers import SentenceTransformer
-from dotenv import load_dotenv
-
 import uuid
-from datetime import datetime
 
-# -----------------------------------
-# LOAD ENV VARIABLES
-# -----------------------------------
+from datetime import datetime
 
 import streamlit as st
 
-GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+from groq import Groq
+from sentence_transformers import SentenceTransformer
 
+# -----------------------------------
+# VALID ENTERPRISE KEYWORDS
+# -----------------------------------
+
+VALID_ENTERPRISE_KEYWORDS = [
+    "incident",
+    "scheduler",
+    "deployment",
+    "etl",
+    "dashboard",
+    "report",
+    "failure",
+    "job",
+    "refresh",
+    "service",
+    "server",
+    "rca",
+    "workflow",
+    "database",
+    "latency",
+    "timeout",
+    "ticket",
+    "pipeline",
+    "application",
+    "analytics",
+    "data",
+    "monitoring",
+    "batch",
+    "refresh failure",
+    "operational",
+    "production",
+    "alert"
+]
+
+# -----------------------------------
+# ENTERPRISE QUERY VALIDATION
+# -----------------------------------
+
+def is_enterprise_query(user_query):
+
+    user_query = user_query.lower()
+
+    for keyword in VALID_ENTERPRISE_KEYWORDS:
+
+        if keyword in user_query:
+            return True
+
+    return False
+
+# -----------------------------------
+# LOAD API KEY
+# -----------------------------------
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+try:
+
+    # Streamlit Cloud
+    GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+
+except:
+
+    # Local .env fallback
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+    
 # -----------------------------------
 # PATHS
 # -----------------------------------
@@ -30,20 +90,27 @@ METADATA_PATH = "vectorstore/metadata.pkl"
 # -----------------------------------
 
 print("Loading embedding model...")
-embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+
+embedding_model = SentenceTransformer(
+    "all-MiniLM-L6-v2"
+)
 
 # -----------------------------------
 # LOAD FAISS INDEX
 # -----------------------------------
 
 print("Loading FAISS index...")
-index = faiss.read_index(FAISS_INDEX_PATH)
+
+index = faiss.read_index(
+    FAISS_INDEX_PATH
+)
 
 # -----------------------------------
 # LOAD METADATA
 # -----------------------------------
 
 print("Loading metadata...")
+
 with open(METADATA_PATH, "rb") as f:
     metadata = pickle.load(f)
 
@@ -51,21 +118,50 @@ with open(METADATA_PATH, "rb") as f:
 # LOAD GROQ CLIENT
 # -----------------------------------
 
-client = Groq(api_key=GROQ_API_KEY)
+client = Groq(
+    api_key=GROQ_API_KEY
+)
 
 # -----------------------------------
-# MAIN FUNCTION
+# MAIN INCIDENT ANALYSIS FUNCTION
 # -----------------------------------
 
 def analyze_incident(user_query):
 
     # -----------------------------------
+    # ENTERPRISE SCOPE VALIDATION
+    # -----------------------------------
+
+    if not is_enterprise_query(user_query):
+
+        return """
+## Scope Restriction Notice
+
+The requested query is outside the scope of the current enterprise operational knowledge base.
+
+This AI assistant is currently limited to:
+- Operational incidents
+- Scheduler failures
+- ETL disruptions
+- Deployment issues
+- Dashboard/reporting failures
+- Enterprise RCA analysis
+- Production support operations
+
+Please submit an enterprise operational incident or reporting-related issue.
+"""
+
+    # -----------------------------------
     # STEP 1 — CREATE QUERY EMBEDDING
     # -----------------------------------
 
-    query_embedding = embedding_model.encode([user_query])
+    query_embedding = embedding_model.encode(
+        [user_query]
+    )
 
-    query_embedding = np.array(query_embedding).astype("float32")
+    query_embedding = np.array(
+        query_embedding
+    ).astype("float32")
 
     # -----------------------------------
     # STEP 2 — SEARCH FAISS
@@ -73,7 +169,10 @@ def analyze_incident(user_query):
 
     top_k = 5
 
-    distances, indices = index.search(query_embedding, top_k)
+    _, indices = index.search(
+        query_embedding,
+        top_k
+    )
 
     # -----------------------------------
     # STEP 3 — RETRIEVE CONTEXT
@@ -93,7 +192,22 @@ def analyze_incident(user_query):
     # -----------------------------------
 
     prompt = f"""
-You are an enterprise operations RCA assistant.
+You are an enterprise operational intelligence assistant specialized in reporting and analytics environments.
+
+Your responsibility is to provide concise, operationally scoped, enterprise-grade incident analysis.
+
+STRICT RULES:
+- Do NOT generate generic AI explanations
+- Do NOT speculate outside provided context
+- Keep response concise and operational
+- Focus only on enterprise reporting operations
+- Avoid unnecessary technical jargon
+- Keep each section short and actionable
+- Use bullet points wherever appropriate
+- Severity must be ONLY:
+  Critical / High / Medium / Low
+- If information is unavailable in enterprise context, clearly mention it
+- Never answer outside enterprise operational scope
 
 Your role:
 - Analyze operational incidents
@@ -103,20 +217,39 @@ Your role:
 - Correlate historical incidents
 - Use the enterprise operational knowledge provided below
 
-Enterprise Knowledge Base:
+Enterprise Operational Knowledge Base:
 {retrieved_context}
 
 Current Incident:
 {user_query}
 
-Provide response in this format:
+Provide response EXACTLY in this format:
 
-1. Probable Root Cause
-2. Incident Severity
-3. Affected Systems
-4. Similar Historical Incidents
-5. Recommended Remediation
-6. Operational Summary
+## Incident Summary
+(2-3 concise lines)
+
+## Probable Root Cause
+- Point 1
+- Point 2
+
+## Severity
+Critical / High / Medium / Low
+
+## Affected Components
+- Component 1
+- Component 2
+
+## Recommended Remediation
+- Action 1
+- Action 2
+- Action 3
+
+## Preventive Recommendation
+- Recommendation 1
+- Recommendation 2
+
+## Operational Insight
+(1 concise enterprise operational observation)
 """
 
     # -----------------------------------
@@ -128,14 +261,24 @@ Provide response in this format:
         messages=[
             {
                 "role": "system",
-                "content": "You are an intelligent enterprise operations copilot."
+                "content": """
+You are an enterprise operational intelligence copilot.
+
+You ONLY answer enterprise operational incident queries.
+
+Never behave like a generic chatbot.
+
+Never provide unrelated information.
+
+Keep all responses concise, enterprise-focused, and operationally scoped.
+"""
             },
             {
                 "role": "user",
                 "content": prompt
             }
         ],
-        temperature=0.3
+        temperature=0.2
     )
 
     # -----------------------------------
@@ -148,7 +291,10 @@ Provide response in this format:
 # ADD NEW INCIDENT TO KNOWLEDGE BASE
 # -----------------------------------
 
-def add_incident_to_knowledgebase(user_query, ai_response):
+def add_incident_to_knowledgebase(
+    user_query,
+    ai_response
+):
 
     # -----------------------------------
     # GENERATE INCIDENT ID
@@ -160,10 +306,12 @@ def add_incident_to_knowledgebase(user_query, ai_response):
     # TIMESTAMP
     # -----------------------------------
 
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.now().strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
 
     # -----------------------------------
-    # CREATE NEW CHUNK
+    # CREATE NEW INCIDENT CHUNK
     # -----------------------------------
 
     new_chunk = f"""
@@ -184,12 +332,16 @@ AI RCA Analysis:
     # CREATE EMBEDDING
     # -----------------------------------
 
-    new_embedding = embedding_model.encode([new_chunk])
+    new_embedding = embedding_model.encode(
+        [new_chunk]
+    )
 
-    new_embedding = np.array(new_embedding).astype("float32")
+    new_embedding = np.array(
+        new_embedding
+    ).astype("float32")
 
     # -----------------------------------
-    # ADD TO FAISS
+    # ADD TO FAISS INDEX
     # -----------------------------------
 
     index.add(new_embedding)
@@ -201,16 +353,20 @@ AI RCA Analysis:
     metadata.append(new_chunk)
 
     # -----------------------------------
-    # SAVE UPDATED INDEX
+    # SAVE UPDATED FAISS INDEX
     # -----------------------------------
 
-    faiss.write_index(index, FAISS_INDEX_PATH)
+    faiss.write_index(
+        index,
+        FAISS_INDEX_PATH
+    )
 
     # -----------------------------------
     # SAVE UPDATED METADATA
     # -----------------------------------
 
     with open(METADATA_PATH, "wb") as f:
+
         pickle.dump(metadata, f)
 
     print(f"New incident stored: {incident_id}")
