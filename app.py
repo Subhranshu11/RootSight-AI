@@ -11,7 +11,7 @@ from scripts.query_engine import (
 # -----------------------------------
 
 st.set_page_config(
-    page_title="RootSight",
+    page_title="RootSight AI",
     page_icon="🦁",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -181,7 +181,7 @@ with st.sidebar:
         <div style='text-align:center; margin-bottom: 18px;'>
             <div style='font-size:52px; line-height:1; margin-bottom:8px;'>🦁</div>
             <div style='font-size:28px; font-weight:700; margin-bottom:4px;'>
-                <span style='color:var(--root-color);'>Root</span><span style='color:#FF6200;'>Sight</span>
+                <span style='color:var(--root-color);'>Root</span><span style='color:#FF6200;'>Sight AI</span>
             </div>
             <div style='font-size:13px; margin-top:5px; opacity:0.75; color:#5B6575;'>
                 Enterprise Operational Intelligence
@@ -226,7 +226,7 @@ st.markdown("""
 <span style="color:var(--root-color);">
     Root
 </span><span style="color:#FF6200;">
-    Sight
+    Sight AI
 </span>
 
 </div>
