@@ -10,6 +10,7 @@ import streamlit as st
 
 from groq import Groq
 from sentence_transformers import SentenceTransformer
+from dotenv import load_dotenv
 
 # -----------------------------------
 # VALID ENTERPRISE KEYWORDS
@@ -61,10 +62,8 @@ def is_enterprise_query(user_query):
     return False
 
 # -----------------------------------
-# LOAD API KEY
+# LOAD ENV VARIABLES
 # -----------------------------------
-
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -75,9 +74,9 @@ try:
 
 except:
 
-    # Local .env fallback
-    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-    
+    # Local Development
+    GROQ_API_KEY = "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"
+
 # -----------------------------------
 # PATHS
 # -----------------------------------
@@ -112,6 +111,7 @@ index = faiss.read_index(
 print("Loading metadata...")
 
 with open(METADATA_PATH, "rb") as f:
+
     metadata = pickle.load(f)
 
 # -----------------------------------
@@ -126,7 +126,10 @@ client = Groq(
 # MAIN INCIDENT ANALYSIS FUNCTION
 # -----------------------------------
 
-def analyze_incident(user_query):
+def analyze_incident(
+    user_query,
+    return_context=False
+):
 
     # -----------------------------------
     # ENTERPRISE SCOPE VALIDATION
@@ -134,7 +137,7 @@ def analyze_incident(user_query):
 
     if not is_enterprise_query(user_query):
 
-        return """
+        scope_message = """
 ## Scope Restriction Notice
 
 The requested query is outside the scope of the current enterprise operational knowledge base.
@@ -150,6 +153,15 @@ This AI assistant is currently limited to:
 
 Please submit an enterprise operational incident or reporting-related issue.
 """
+
+        if return_context:
+
+            return {
+                "response": scope_message,
+                "context": []
+            }
+
+        return scope_message
 
     # -----------------------------------
     # STEP 1 — CREATE QUERY EMBEDDING
@@ -180,11 +192,17 @@ Please submit an enterprise operational incident or reporting-related issue.
 
     retrieved_context = ""
 
+    retrieved_chunks = []
+
     for idx in indices[0]:
 
         if idx < len(metadata):
 
-            retrieved_context += metadata[idx]
+            chunk = metadata[idx]
+
+            retrieved_chunks.append(chunk)
+
+            retrieved_context += chunk
             retrieved_context += "\n\n----------------------\n\n"
 
     # -----------------------------------
@@ -285,7 +303,16 @@ Keep all responses concise, enterprise-focused, and operationally scoped.
     # STEP 6 — RETURN RESPONSE
     # -----------------------------------
 
-    return response.choices[0].message.content
+    final_response = response.choices[0].message.content
+
+    if return_context:
+
+        return {
+            "response": final_response,
+            "context": retrieved_chunks
+        }
+
+    return final_response
 
 # -----------------------------------
 # ADD NEW INCIDENT TO KNOWLEDGE BASE
@@ -311,7 +338,7 @@ def add_incident_to_knowledgebase(
     )
 
     # -----------------------------------
-    # CREATE NEW INCIDENT CHUNK
+    # CREATE INCIDENT CHUNK
     # -----------------------------------
 
     new_chunk = f"""
