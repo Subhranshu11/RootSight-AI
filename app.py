@@ -216,17 +216,6 @@ with st.sidebar:
 - Production Alerts
 """)
 
-    st.divider()
-
-    st.markdown("### AI Stack")
-
-    st.markdown("""
-- Groq LLM
-- FAISS Retrieval
-- Sentence Transformers
-- Streamlit
-""")
-
 # -----------------------------------
 # HEADER
 # -----------------------------------
