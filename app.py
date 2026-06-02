@@ -11,7 +11,7 @@ from scripts.query_engine import (
 # -----------------------------------
 
 st.set_page_config(
-    page_title="ResolveOrange",
+    page_title="RootSight",
     page_icon="🦁",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -29,7 +29,7 @@ THEME VARIABLES
 ----------------------------------- */
 
 :root {
-    --resolve-color: #003B70;
+    --root-color: #003B70;
 }
 
 /* Dark Theme */
@@ -37,7 +37,7 @@ THEME VARIABLES
 @media (prefers-color-scheme: dark) {
 
     :root {
-        --resolve-color: #4DA3FF;
+        --root-color: #4DA3FF;
     }
 
 }
@@ -181,7 +181,7 @@ with st.sidebar:
         <div style='text-align:center; margin-bottom: 18px;'>
             <div style='font-size:52px; line-height:1; margin-bottom:8px;'>🦁</div>
             <div style='font-size:28px; font-weight:700; margin-bottom:4px;'>
-                <span style='color:var(--resolve-color);'>Resolve</span><span style='color:#FF6200;'>Orange</span>
+                <span style='color:var(--root-color);'>Root</span><span style='color:#FF6200;'>Sight</span>
             </div>
             <div style='font-size:13px; margin-top:5px; opacity:0.75; color:#5B6575;'>
                 Enterprise Operational Intelligence
@@ -223,10 +223,10 @@ with st.sidebar:
 st.markdown("""
 <div class="main-header">
 
-<span style="color:var(--resolve-color);">
-    Resolve
+<span style="color:var(--root-color);">
+    Root
 </span><span style="color:#FF6200;">
-    Orange
+    Sight
 </span>
 
 </div>
