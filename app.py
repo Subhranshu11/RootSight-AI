@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit.components.v1 import html
 
 from scripts.query_engine import (
     analyze_incident,
@@ -10,91 +11,161 @@ from scripts.query_engine import (
 # -----------------------------------
 
 st.set_page_config(
-    page_title="ReportOps Copilot",
-    page_icon="🤖",
+    page_title="ResolveOrange",
+    page_icon="🦁",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # -----------------------------------
-# CUSTOM CSS
+# ADAPTIVE CSS (STREAMLIT LIGHT/DARK)
 # -----------------------------------
 
 st.markdown("""
 <style>
 
-/* Main App Background */
+/* -----------------------------------
+THEME VARIABLES
+----------------------------------- */
+
+:root {
+    --resolve-color: #003B70;
+}
+
+/* Dark Theme */
+
+@media (prefers-color-scheme: dark) {
+
+    :root {
+        --resolve-color: #4DA3FF;
+    }
+
+}
+
+/* -----------------------------------
+MAIN APP
+----------------------------------- */
+
 .stApp {
-    background-color: #0E1117;
-    color: white;
+    font-family: "Segoe UI", sans-serif;
 }
 
-/* Sidebar */
+/* -----------------------------------
+SIDEBAR
+----------------------------------- */
+
 section[data-testid="stSidebar"] {
-    background-color: #161B22;
-    border-right: 1px solid #30363D;
+    border-right: 1px solid rgba(128,128,128,0.15);
 }
 
-/* Input Box */
+/* -----------------------------------
+TEXT AREA
+----------------------------------- */
+
 textarea {
-    border-radius: 12px !important;
-    border: 1px solid #30363D !important;
-    background-color: #161B22 !important;
-    color: white !important;
+    border-radius: 14px !important;
+    padding: 14px !important;
+    font-size: 15px !important;
 }
 
-/* Buttons */
+/* -----------------------------------
+BUTTONS
+----------------------------------- */
+
 .stButton > button {
     width: 100%;
-    border-radius: 10px;
+    border-radius: 12px;
     height: 3rem;
     font-weight: 600;
-    background-color: #2383E2;
+    background-color: #FF6200;
     color: white;
     border: none;
+    transition: 0.3s;
 }
 
 .stButton > button:hover {
-    background-color: #1A6FC2;
+    opacity: 0.9;
 }
 
-/* Chat Style Containers */
-.chat-container {
-    background-color: #161B22;
-    padding: 20px;
-    border-radius: 14px;
-    border: 1px solid #30363D;
-    margin-top: 15px;
-}
+/* -----------------------------------
+MAIN HEADER
+----------------------------------- */
 
-/* RCA Output */
-.rca-box {
-    background-color: #0D1117;
-    padding: 24px;
-    border-radius: 14px;
-    border: 1px solid #30363D;
-    line-height: 1.8;
-    font-size: 15px;
-}
-
-/* Header */
 .main-header {
-    font-size: 34px;
+    font-size: 40px;
     font-weight: 700;
     margin-bottom: 0;
 }
 
+/* -----------------------------------
+SUB HEADER
+----------------------------------- */
+
 .sub-header {
-    color: #8B949E;
-    margin-top: 0;
-    margin-bottom: 25px;
+    color: inherit;
+    opacity: 0.75;
+    margin-top: 6px;
+    margin-bottom: 30px;
+    font-size: 16px;
 }
 
-/* Footer */
+/* -----------------------------------
+WORKSPACE CARD
+----------------------------------- */
+
+.workspace-card {
+    padding: 0px;
+    border: none;
+    background: transparent;
+}
+
+/* -----------------------------------
+RCA OUTPUT
+----------------------------------- */
+
+.rca-box {
+    padding: 24px;
+    border-radius: 18px;
+    border-left: 5px solid #FF6200;
+    border-top: 1px solid rgba(128,128,128,0.15);
+    border-right: 1px solid rgba(128,128,128,0.15);
+    border-bottom: 1px solid rgba(128,128,128,0.15);
+    line-height: 1.8;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+/* -----------------------------------
+SECTION TITLE
+----------------------------------- */
+
+.section-title {
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* -----------------------------------
+FOOTER
+----------------------------------- */
+
 .footer-text {
-    color: #8B949E;
     text-align: center;
+    opacity: 0.7;
     margin-top: 40px;
+    font-size: 13px;
+}
+
+/* -----------------------------------
+STATUS CARDS
+----------------------------------- */
+
+.status-card {
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(128,128,128,0.12);
+    background-color: rgba(255,255,255,0.02);
+    text-align: center;
 }
 
 </style>
@@ -105,11 +176,19 @@ textarea {
 # -----------------------------------
 
 with st.sidebar:
-
-    st.markdown("## 🤖 ReportOps AI")
-
-    st.caption(
-        "Enterprise Operational Intelligence Workspace"
+    st.markdown(
+        """
+        <div style='text-align:center; margin-bottom: 18px;'>
+            <div style='font-size:52px; line-height:1; margin-bottom:8px;'>🦁</div>
+            <div style='font-size:28px; font-weight:700; margin-bottom:4px;'>
+                <span style='color:var(--resolve-color);'>Resolve</span><span style='color:#FF6200;'>Orange</span>
+            </div>
+            <div style='font-size:13px; margin-top:5px; opacity:0.75; color:#5B6575;'>
+                Enterprise Operational Intelligence
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
     st.divider()
@@ -154,7 +233,13 @@ with st.sidebar:
 
 st.markdown("""
 <div class="main-header">
-ReportOps Copilot
+
+<span style="color:var(--resolve-color);">
+    Resolve
+</span><span style="color:#FF6200;">
+    Orange
+</span>
+
 </div>
 
 <div class="sub-header">
@@ -163,16 +248,63 @@ Enterprise Operational Intelligence & RCA Workspace
 """, unsafe_allow_html=True)
 
 # -----------------------------------
-# CHAT-LIKE INCIDENT INPUT
+# OPERATIONAL STATUS BAR
+# -----------------------------------
+
+status_col1, status_col2, status_col3 = st.columns(3)
+
+with status_col1:
+    st.markdown("""
+    <div class="status-card">
+        <div style="opacity:0.7; font-size:13px; margin-bottom:4px;">
+            System Status
+        </div>
+        <div style="font-weight:600; font-size:16px;">
+            🟢 Operational
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with status_col2:
+    st.markdown("""
+    <div class="status-card">
+        <div style="opacity:0.7; font-size:13px; margin-bottom:4px;">
+            Knowledge Base
+        </div>
+        <div style="font-weight:600; font-size:16px;">
+            🟢 Connected
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with status_col3:
+    st.markdown("""
+    <div class="status-card">
+        <div style="opacity:0.7; font-size:13px; margin-bottom:4px;">
+            AI Engine
+        </div>
+        <div style="font-weight:600; font-size:16px;">
+            🟢 Active
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+st.markdown("<br>", unsafe_allow_html=True)
+
+# -----------------------------------
+# INPUT SECTION
 # -----------------------------------
 
 st.markdown("""
-<div class="chat-container">
+<div class="section-title">
+Enterprise Incident Input
+</div>
 """, unsafe_allow_html=True)
 
 user_input = st.text_area(
-    "Enter Enterprise Incident",
+    label="",
     height=180,
+    key="incident_input",
     placeholder="""
 Example:
 
@@ -180,29 +312,63 @@ Scheduler service stopped unexpectedly after deployment.
 Dashboard refresh jobs failed across production.
 ETL queue stuck for 45 minutes.
 Users unable to access refreshed reports.
+
+(Press Enter to Analyze • Shift+Enter for new line)
 """
 )
 
-analyze_clicked = st.button(
-    "Analyze Incident"
+# -----------------------------------
+# ENTER KEY SUBMISSION
+# -----------------------------------
+
+enter_pressed = html(
+    """
+    <script>
+
+    const doc = window.parent.document;
+
+    const textarea = doc.querySelector('textarea');
+
+    textarea.addEventListener('keydown', function(event) {
+
+        if (event.key === 'Enter' && !event.shiftKey) {
+
+            event.preventDefault();
+
+            const buttons = doc.querySelectorAll('button');
+
+            buttons.forEach(btn => {
+
+                if (btn.innerText.includes('Analyze Incident')) {
+                    btn.click();
+                }
+
+            });
+
+        }
+
+    });
+
+    </script>
+    """,
+    height=0
 )
 
-st.markdown("</div>", unsafe_allow_html=True)
+analyze_clicked = st.button(
+    "Analyze Incident",
+    use_container_width=True
+)
 
 # -----------------------------------
-# ANALYSIS SECTION
+# INCIDENT ANALYSIS
 # -----------------------------------
 
 if analyze_clicked:
 
-    # -----------------------------------
-    # VALIDATION
-    # -----------------------------------
-
     if not user_input.strip():
 
         st.warning(
-            "Please enter incident details."
+            "Please enter enterprise incident details."
         )
 
     else:
@@ -217,9 +383,33 @@ if analyze_clicked:
                 # ANALYZE INCIDENT
                 # -----------------------------------
 
-                response = analyze_incident(
-                    user_input
+                retrieved_context = []
+
+                result = analyze_incident(
+                    user_input,
+                    return_context=True
                 )
+
+                response = result["response"]
+
+                retrieved_context = result.get(
+                    "context",
+                    []
+                )
+
+                # -----------------------------------
+                # SCOPE RESTRICTION CHECK
+                # -----------------------------------
+
+                if "Scope Restriction Notice" in response:
+
+                    st.warning(
+                        "Query outside enterprise operational scope."
+                    )
+
+                    st.markdown(response)
+
+                    st.stop()
 
                 # -----------------------------------
                 # DETECT SEVERITY
@@ -246,21 +436,17 @@ if analyze_clicked:
                 )
 
                 # -----------------------------------
-                # INCIDENT HEADER
+                # HEADER
                 # -----------------------------------
 
                 st.markdown("## Incident Analysis")
-
-                # -----------------------------------
-                # INCIDENT ID
-                # -----------------------------------
 
                 st.caption(
                     f"Incident ID: {incident_id}"
                 )
 
                 # -----------------------------------
-                # SEVERITY DISPLAY
+                # SEVERITY
                 # -----------------------------------
 
                 if severity == "Critical":
@@ -303,27 +489,60 @@ if analyze_clicked:
                 )
 
                 # -----------------------------------
-                # METRICS
+                # ENTERPRISE CONTEXT VIEWER
                 # -----------------------------------
 
-                st.divider()
+                with st.expander(
+                    "Retrieved Enterprise Context"
+                ):
 
-                col1, col2, col3 = st.columns(3)
+                    st.caption(
+                        "Semantic operational knowledge retrieved from enterprise vector database"
+                    )
 
-                col1.metric(
-                    "Operational Mode",
-                    "Enterprise RCA"
-                )
+                    if retrieved_context:
 
-                col2.metric(
-                    "Knowledge Retrieval",
-                    "FAISS Semantic Search"
-                )
+                        for i, chunk in enumerate(retrieved_context):
 
-                col3.metric(
-                    "LLM Engine",
-                    "llama-3.3-70b-versatile"
-                )
+                            st.markdown(
+                                f"### Context Chunk {i + 1}"
+                            )
+
+                            cleaned_chunk = chunk.replace(
+                                "**",
+                                ""
+                            )
+
+                            cleaned_chunk = cleaned_chunk.replace(
+                                "severity: Low",
+                                "severity: LOW"
+                            )
+
+                            cleaned_chunk = cleaned_chunk.replace(
+                                "severity: Medium",
+                                "severity: MEDIUM"
+                            )
+
+                            cleaned_chunk = cleaned_chunk.replace(
+                                "severity: High",
+                                "severity: HIGH"
+                            )
+
+                            cleaned_chunk = cleaned_chunk.replace(
+                                "severity: Critical",
+                                "severity: CRITICAL"
+                            )
+
+                            st.code(
+                                cleaned_chunk[:2500],
+                                language="yaml"
+                            )
+
+                    else:
+
+                        st.info(
+                            "No enterprise context retrieved."
+                        )
 
             except Exception as e:
 
