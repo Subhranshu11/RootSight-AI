@@ -676,10 +676,14 @@ if analyze_clicked:
                 # STORE INCIDENT
                 # -----------------------------------
 
-                incident_id = add_incident_to_knowledgebase(
-                    user_input,
-                    response
-                )
+                incident_id = None
+
+                if "Scope Restriction Notice" not in response:
+                
+                    incident_id = add_incident_to_knowledgebase(
+                        user_input,
+                        response
+                    )
 
                 # -----------------------------------
                 # HEADER
