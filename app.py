@@ -321,7 +321,7 @@ with st.sidebar:
 - Production Alerts
 """)
 
-st.divider()
+    st.divider()
 
     st.markdown(
         """
