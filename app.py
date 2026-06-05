@@ -328,7 +328,7 @@ with st.sidebar:
         <div style="
             text-align:center;
             opacity:0.75;
-            font-size:13px;
+            font-size:15px;
             margin-top:10px;
             margin-bottom:10px;
         ">
@@ -337,9 +337,9 @@ with st.sidebar:
             <span style="
                 color:#FF6200;
                 font-weight:600;
-                font-size:16px;
+                font-size:20px;
             ">
-                Vector Minds
+                🧠Vector Minds
             </span>
         </div>
         """,
