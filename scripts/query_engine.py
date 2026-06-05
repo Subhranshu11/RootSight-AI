@@ -12,6 +12,30 @@ from groq import Groq
 from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
 
+DYNAMIC_FAISS_PATH = "dynamic_vectorstore/dynamic_faiss.bin"
+DYNAMIC_METADATA_PATH = "dynamic_vectorstore/dynamic_metadata.pkl"
+def load_dynamic_repository():
+
+    if (
+        os.path.exists(DYNAMIC_FAISS_PATH)
+        and
+        os.path.exists(DYNAMIC_METADATA_PATH)
+    ):
+
+        dynamic_index = faiss.read_index(
+            DYNAMIC_FAISS_PATH
+        )
+
+        with open(
+            DYNAMIC_METADATA_PATH,
+            "rb"
+        ) as f:
+
+            dynamic_metadata = pickle.load(f)
+
+        return dynamic_index, dynamic_metadata
+
+    return None, []
 # -----------------------------------
 # VALID ENTERPRISE KEYWORDS
 # -----------------------------------
@@ -75,7 +99,7 @@ try:
 except:
 
     # Local Development
-    GROQ_API_KEY = "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"
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # -----------------------------------
 # PATHS
@@ -126,42 +150,54 @@ client = Groq(
 # MAIN INCIDENT ANALYSIS FUNCTION
 # -----------------------------------
 
+def keyword_search(query, metadata, top_n=5):
+
+    query = query.lower()
+
+    keyword_results = []
+
+    for chunk in metadata:
+
+        score = 0
+
+        chunk_lower = chunk.lower()
+
+        for word in set(query.split()):
+
+            if word in chunk_lower:
+                score += 1
+
+        if score > 0:
+
+            keyword_results.append(
+                (score, chunk)
+            )
+
+    keyword_results.sort(
+        reverse=True,
+        key=lambda x: x[0]
+    )
+
+    return [
+        chunk
+        for score, chunk
+        in keyword_results[:top_n]
+    ]
+
 def analyze_incident(
     user_query,
     return_context=False
 ):
-
-    # -----------------------------------
-    # ENTERPRISE SCOPE VALIDATION
-    # -----------------------------------
-
-    if not is_enterprise_query(user_query):
-
-        scope_message = """
-## Scope Restriction Notice
-
-The requested query is outside the scope of the current enterprise operational knowledge base.
-
-This AI assistant is currently limited to:
-- Operational incidents
-- Scheduler failures
-- ETL disruptions
-- Deployment issues
-- Dashboard/reporting failures
-- Enterprise RCA analysis
-- Production support operations
-
-Please submit an enterprise operational incident or reporting-related issue.
-"""
-
-        if return_context:
-
-            return {
-                "response": scope_message,
-                "context": []
-            }
-
-        return scope_message
+    dynamic_index, dynamic_metadata = (
+        load_dynamic_repository()
+    )
+    USE_DYNAMIC_REPOSITORY = (
+        dynamic_index is not None
+        and
+        len(dynamic_metadata) > 0
+    )
+    if dynamic_metadata is None:
+        dynamic_metadata = []
 
     # -----------------------------------
     # STEP 1 — CREATE QUERY EMBEDDING
@@ -175,40 +211,122 @@ Please submit an enterprise operational incident or reporting-related issue.
         query_embedding
     ).astype("float32")
 
+    print("Metadata Size:", len(metadata))
     # -----------------------------------
     # STEP 2 — SEARCH FAISS
     # -----------------------------------
 
     top_k = 5
 
-    _, indices = index.search(
-        query_embedding,
-        top_k
-    )
+    all_chunks = []
+
+    if USE_DYNAMIC_REPOSITORY:
+
+        print("Using Dynamic Repository")
+
+        distances, indices = (
+            dynamic_index.search(
+                query_embedding,
+                top_k
+            )
+        )
+
+        active_metadata = dynamic_metadata
+
+    else:
+
+        print("Using Static Repository")
+
+        distances, indices = (
+            index.search(
+                query_embedding,
+                top_k
+            )
+        )
+
+        active_metadata = metadata
+
+    for distance, idx in zip(
+        distances[0],
+        indices[0]
+    ):
+
+        if idx < len(active_metadata):
+
+            all_chunks.append(
+                active_metadata[idx]
+            )
 
     # -----------------------------------
     # STEP 3 — RETRIEVE CONTEXT
     # -----------------------------------
 
+    vector_chunks = list(
+        dict.fromkeys(all_chunks)
+    )
+
+    keyword_chunks = keyword_search(
+        user_query,
+        active_metadata,
+        top_n=5
+    )
+
+    combined_chunks = []
+    seen = set()
+
+    for chunk in vector_chunks + keyword_chunks:
+
+        if chunk not in seen:
+
+            combined_chunks.append(chunk)
+
+            seen.add(chunk)
+
+    print(
+        f"Retrieved {len(combined_chunks)} relevant chunks"
+    )
+
+    # -----------------------------------
+    # BUILD FINAL CONTEXT
+    # -----------------------------------
+
     retrieved_context = ""
 
-    retrieved_chunks = []
+    for chunk in combined_chunks:
 
-    for idx in indices[0]:
+        retrieved_context += chunk
+        retrieved_context += "\n\n----------------------\n\n"
 
-        if idx < len(metadata):
+    print(
+        f"Vector Chunks: {len(vector_chunks)}"
+    )
 
-            chunk = metadata[idx]
+    print(
+        f"Keyword Chunks: {len(keyword_chunks)}"
+    )
 
-            retrieved_chunks.append(chunk)
+    print(
+        f"Combined Chunks: {len(combined_chunks)}"
+    )
 
-            retrieved_context += chunk
-            retrieved_context += "\n\n----------------------\n\n"
+    print(f"Final Context Size: {len(retrieved_context)} chars")
+
+    print(
+        f"Dynamic Chunks Loaded: {len(dynamic_metadata)}"
+    )
+    print(
+        f"Total Retrieved Chunks: {len(all_chunks)}"
+    )
 
     # -----------------------------------
     # STEP 4 — CREATE PROMPT
     # -----------------------------------
-
+    knowledge_source = (
+        "Uploaded Enterprise Documents"
+        if USE_DYNAMIC_REPOSITORY
+        else
+        "Historical Knowledge Base"
+    )
     prompt = f"""
 You are an enterprise operational intelligence assistant specialized in reporting and analytics environments.
 
@@ -238,6 +356,9 @@ Your role:
 Enterprise Operational Knowledge Base:
 {retrieved_context}
 
+Knowledge Source:
+{knowledge_source}
+
 Current Incident:
 {user_query}
 
@@ -249,6 +370,7 @@ Provide response EXACTLY in this format:
 ## Probable Root Cause
 - Point 1
 - Point 2
+- Point 3
 
 ## Severity
 Critical / High / Medium / Low
@@ -261,6 +383,7 @@ Critical / High / Medium / Low
 - Action 1
 - Action 2
 - Action 3
+- Action 4
 
 ## Preventive Recommendation
 - Recommendation 1
@@ -309,7 +432,7 @@ Keep all responses concise, enterprise-focused, and operationally scoped.
 
         return {
             "response": final_response,
-            "context": retrieved_chunks
+            "context": combined_chunks
         }
 
     return final_response

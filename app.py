@@ -1,9 +1,15 @@
 import streamlit as st
 from streamlit.components.v1 import html
+import os
+from groq import Groq
 
 from scripts.query_engine import (
     analyze_incident,
     add_incident_to_knowledgebase
+)
+
+from scripts.dynamic_ingest import (
+    build_dynamic_repository
 )
 
 # -----------------------------------
@@ -29,7 +35,7 @@ THEME VARIABLES
 ----------------------------------- */
 
 :root {
-    --root-color: #003B70;
+    --resolve-color: #003B70;
 }
 
 /* Dark Theme */
@@ -37,7 +43,7 @@ THEME VARIABLES
 @media (prefers-color-scheme: dark) {
 
     :root {
-        --root-color: #4DA3FF;
+        --resolve-color: #4DA3FF;
     }
 
 }
@@ -56,6 +62,14 @@ SIDEBAR
 
 section[data-testid="stSidebar"] {
     border-right: 1px solid rgba(128,128,128,0.15);
+}
+
+/* Center the image in the sidebar */
+
+[data-testid="stSidebar"] img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* -----------------------------------
@@ -92,7 +106,7 @@ MAIN HEADER
 ----------------------------------- */
 
 .main-header {
-    font-size: 40px;
+    font-size: 50px;
     font-weight: 700;
     margin-bottom: 0;
 }
@@ -104,7 +118,7 @@ SUB HEADER
 .sub-header {
     color: inherit;
     opacity: 0.75;
-    margin-top: 6px;
+    margin-top: 0px;
     margin-bottom: 30px;
     font-size: 16px;
 }
@@ -161,6 +175,7 @@ STATUS CARDS
 ----------------------------------- */
 
 .status-card {
+    color: inherit;
     padding: 12px;
     border-radius: 12px;
     border: 1px solid rgba(128,128,128,0.12);
@@ -176,20 +191,109 @@ STATUS CARDS
 # -----------------------------------
 
 with st.sidebar:
+
     st.markdown(
         """
-        <div style='text-align:center; margin-bottom: 18px;'>
-            <div style='font-size:52px; line-height:1; margin-bottom:8px;'>🦁</div>
-            <div style='font-size:28px; font-weight:700; margin-bottom:4px;'>
-                <span style='color:var(--root-color);'>Root</span><span style='color:#FF6200;'>Sight AI</span>
+        <div style='text-align:center;'>
+        """,
+        unsafe_allow_html=True
+    )
+
+    col1, col2, col3 = st.columns([1,4,1])
+
+    with col2:
+        st.image("assets/ai_tree.png", width=180)
+
+    st.markdown(
+        """
+        <div style='text-align:center; margin-top:0px;'>
+            <div style='font-size:28px; font-weight:700; margin-bottom:2px;'>
+                <span style='color:#FF6200;'>RootSight AI</span>
             </div>
-            <div style='font-size:13px; margin-top:5px; opacity:0.75; color:#5B6575;'>
+            <div style='font-size:13px; opacity:0.75; margin-top:6px; color:#5B6575;'>
                 Enterprise Operational Intelligence
             </div>
         </div>
         """,
         unsafe_allow_html=True
     )
+
+    st.divider()
+
+    st.markdown("### Enterprise Knowledge Workspace")
+
+    uploaded_files = st.file_uploader(
+        "Upload Knowledge Sources",
+        type=[
+            "csv",
+            "xlsx",
+            "json",
+            "pdf",
+            "docx",
+            "pptx",
+            "txt",
+            "md",
+            "log",
+            "xml"
+        ],
+        accept_multiple_files=True
+    )
+    # -----------------------------------
+    # SAVE UPLOADED FILES
+    # -----------------------------------
+
+    UPLOAD_FOLDER = "dynamic_workspace"
+
+    os.makedirs(
+        UPLOAD_FOLDER,
+        exist_ok=True
+    )
+
+    uploaded_count = 0
+
+    if uploaded_files:
+
+        for uploaded_file in uploaded_files:
+
+            save_path = os.path.join(
+                UPLOAD_FOLDER,
+                uploaded_file.name
+            )
+
+            with open(save_path, "wb") as f:
+
+                f.write(
+                    uploaded_file.getbuffer()
+                )
+
+            uploaded_count += 1
+
+
+        try:
+
+            build_dynamic_repository()
+
+            st.markdown(
+                f"""
+                <div style="
+                    padding:12px;
+                    border-radius:12px;
+                    border-left:4px solid #FF6200;
+                    background-color:rgba(255,98,0,0.08);
+                    margin-top:10px;
+                ">
+                    <b>Enterprise Knowledge Source Activated</b><br>
+                    {uploaded_count} document(s) indexed and available for RCA analysis
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        except Exception:
+
+            st.error(
+                "Knowledge workspace initialization failed."
+            )
 
     st.divider()
 
@@ -201,6 +305,7 @@ with st.sidebar:
 - Operational Intelligence
 - Enterprise Incident Memory
 - RCA Knowledge Retrieval
+- Operational Playbooks
 """)
 
     st.divider()
@@ -223,10 +328,8 @@ with st.sidebar:
 st.markdown("""
 <div class="main-header">
 
-<span style="color:var(--root-color);">
-    Root
-</span><span style="color:#FF6200;">
-    Sight AI
+<span style="color:#FF6200;">
+    RootSight AI
 </span>
 
 </div>
@@ -237,46 +340,141 @@ Enterprise Operational Intelligence & RCA Workspace
 """, unsafe_allow_html=True)
 
 # -----------------------------------
+# HEALTH CHECKS
+# -----------------------------------
+
+# Knowledge Base Status
+
+if (
+    os.path.exists("vectorstore/faiss_index.bin")
+    and
+    os.path.exists("vectorstore/metadata.pkl")
+):
+    kb_status = "🟢 Connected"
+else:
+    kb_status = "🔴 Disconnected"
+
+# AI Engine Status
+
+try:
+
+    # Prefer the Streamlit secret, fall back to environment variable, and handle missing keys gracefully
+    api_key = None
+    try:
+        api_key = st.secrets.get("GROQ_API_KEY")
+    except Exception:
+        api_key = None
+
+    if not api_key:
+        api_key = os.environ.get("GROQ_API_KEY")
+
+    test_client = Groq(
+        api_key=api_key
+    )
+
+    # Only attempt an API call if we have an API key
+    if api_key:
+        test_client.models.list()
+        ai_status = "🟢 Active"
+    else:
+        ai_status = "🔴 Offline"
+
+except Exception:
+
+    ai_status = "🔴 Offline"
+
+# System Status
+
+if (
+    kb_status.startswith("🟢")
+    and
+    ai_status.startswith("🟢")
+):
+    system_status = "🟢 Operational"
+
+else:
+    system_status = "🔴 Degraded"
+
+# -----------------------------------
+# DYNAMIC STATUS CHECKS
+# -----------------------------------
+
+# AI Engine Status
+
+try:
+    ai_status = (
+        "🟢 Active"
+        if (st.secrets.get("GROQ_API_KEY") or os.environ.get("GROQ_API_KEY"))
+        else "🔴 Offline"
+    )
+except:
+    ai_status = "🟢 Active"
+
+# Knowledge Base Status
+
+try:
+    kb_status = (
+        "🟢 Connected"
+        if os.path.exists("vectorstore/metadata.pkl") and os.path.getsize("vectorstore/metadata.pkl") > 0
+        else "🔴 Disconnected"
+    )
+except:
+    kb_status = "🔴 Disconnected"
+
+# System Status
+
+try:
+    system_status = (
+        "🟢 Operational"
+        if os.path.exists("vectorstore/faiss_index.bin") and os.path.getsize("vectorstore/faiss_index.bin") > 0
+        else "🔴 Down"
+    )
+except:
+    system_status = "🔴 Down"
+
+# -----------------------------------
 # OPERATIONAL STATUS BAR
 # -----------------------------------
+
 
 status_col1, status_col2, status_col3 = st.columns(3)
 
 with status_col1:
-    st.markdown("""
+    st.markdown(f"""
     <div class="status-card">
         <div style="opacity:0.7; font-size:13px; margin-bottom:4px;">
             System Status
         </div>
-        <div style="font-weight:600; font-size:16px;">
-            🟢 Operational
+        <div style="font-weight:600; font-size:16px; color:#1F2937;">
+            {system_status}
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 with status_col2:
-    st.markdown("""
+    st.markdown(f"""
     <div class="status-card">
         <div style="opacity:0.7; font-size:13px; margin-bottom:4px;">
             Knowledge Base
         </div>
-        <div style="font-weight:600; font-size:16px;">
-            🟢 Connected
+        <div style="font-weight:600; font-size:16px; color:#1F2937;">
+            {kb_status}
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 with status_col3:
-    st.markdown("""
+    st.markdown(f"""
     <div class="status-card">
         <div style="opacity:0.7; font-size:13px; margin-bottom:4px;">
             AI Engine
         </div>
-        <div style="font-weight:600; font-size:16px;">
-            🟢 Active
+        <div style="font-weight:600; font-size:16px; color:#1F2937;">
+            {ai_status}
         </div>
     </div>
     """, unsafe_allow_html=True)
+
 
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -291,7 +489,8 @@ Enterprise Incident Input
 """, unsafe_allow_html=True)
 
 user_input = st.text_area(
-    label="",
+    label="Incident Description",
+    label_visibility="collapsed",
     height=180,
     key="incident_input",
     placeholder="""
@@ -380,6 +579,39 @@ if analyze_clicked:
                 )
 
                 response = result["response"]
+                import re
+
+                display_response = response
+
+                knowledge_source_display = (
+                    "Uploaded Enterprise Documents"
+                    if uploaded_files
+                    else
+                    "Historical Knowledge Base"
+                )
+
+                display_response = re.sub(
+                    r"## Severity.*?(?=##|$)",
+                    "",
+                    display_response,
+                    flags=re.DOTALL
+                )
+
+                display_response = re.sub(
+                    r"## Affected Components.*?(?=##|$)",
+                    "",
+                    display_response,
+                    flags=re.DOTALL
+                )
+
+                display_response = re.sub(
+                    r"## Operational Insight.*?(?=##|$)",
+                    "",
+                    display_response,
+                    flags=re.DOTALL
+                )
+
+                display_response = display_response.strip()
 
                 retrieved_context = result.get(
                     "context",
@@ -461,7 +693,14 @@ if analyze_clicked:
                     st.success(
                         f"Severity Level: {severity}"
                     )
+                
+                # -----------------------------------
+                # KNOWLEDGE SOURCE
+                # -----------------------------------
 
+                st.success(
+                    f"Knowledge Source: {knowledge_source_display}"
+                )
                 # -----------------------------------
                 # RCA OUTPUT
                 # -----------------------------------
@@ -470,7 +709,7 @@ if analyze_clicked:
                     f"""
 <div class="rca-box">
 
-{response}
+{display_response}
 
 </div>
 """,
