@@ -321,6 +321,31 @@ with st.sidebar:
 - Production Alerts
 """)
 
+st.divider()
+
+st.markdown(
+    """
+    <div style="
+        text-align:center;
+        opacity:0.75;
+        font-size:13px;
+        margin-top:10px;
+        margin-bottom:10px;
+    ">
+        Team Name
+        <br>
+        <span style="
+            color:#FF6200;
+            font-weight:600;
+            font-size:16px;
+        ">
+            Vector Minds
+        </span>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 # -----------------------------------
 # HEADER
 # -----------------------------------
