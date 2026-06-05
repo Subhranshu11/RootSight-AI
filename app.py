@@ -568,7 +568,7 @@ enter_pressed = html(
 )
 
 analyze_clicked = st.button(
-    "Analyze Incident",
+    "RootSight Analyze",
     use_container_width=True
 )
 
