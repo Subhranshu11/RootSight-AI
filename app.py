@@ -671,7 +671,7 @@ if analyze_clicked:
 
                 elif "Low" in response:
                     severity = "Low"
-"""
+                """
                 # -----------------------------------
                 # STORE INCIDENT
                 # -----------------------------------
@@ -684,7 +684,7 @@ if analyze_clicked:
                         user_input,
                         response
                     )
-"""
+                """
                 # -----------------------------------
                 # HEADER
                 # -----------------------------------
