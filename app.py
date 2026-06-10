@@ -671,20 +671,7 @@ if analyze_clicked:
 
                 elif "Low" in response:
                     severity = "Low"
-                """
-                # -----------------------------------
-                # STORE INCIDENT
-                # -----------------------------------
-
-                incident_id = None
-
-                if "Scope Restriction Notice" not in response:
                 
-                    incident_id = add_incident_to_knowledgebase(
-                        user_input,
-                        response
-                    )
-                """
                 # -----------------------------------
                 # HEADER
                 # -----------------------------------
