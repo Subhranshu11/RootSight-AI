@@ -678,9 +678,9 @@ if analyze_clicked:
 
                 st.markdown("## Incident Analysis")
 
-                st.caption(
-                    f"Incident ID: {incident_id}"
-                )
+                #st.caption(
+                #    f"Incident ID: {incident_id}"
+                #)
 
                 # -----------------------------------
                 # SEVERITY
