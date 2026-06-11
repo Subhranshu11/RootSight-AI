@@ -256,7 +256,29 @@ def analyze_incident(
             all_chunks.append(
                 active_metadata[idx]
             )
+    best_distance = distances[0][0]
 
+    RELEVANCE_THRESHOLD = 1.5
+    
+    if best_distance > RELEVANCE_THRESHOLD:
+    
+        scope_message = """
+    ## Scope Restriction Notice
+    
+    No relevant enterprise operational knowledge was found.
+    
+    Query is outside the operational knowledge base scope.
+    """
+    
+        if return_context:
+    
+            return {
+                "response": scope_message,
+                "context": [],
+                "knowledge_source": "Out Of Scope"
+            }
+    
+        return scope_message
     # -----------------------------------
     # STEP 3 — RETRIEVE CONTEXT
     # -----------------------------------

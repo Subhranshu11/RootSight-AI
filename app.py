@@ -321,6 +321,31 @@ with st.sidebar:
 - Production Alerts
 """)
 
+    st.divider()
+
+    st.markdown(
+        """
+        <div style="
+            text-align:center;
+            opacity:0.75;
+            font-size:15px;
+            margin-top:10px;
+            margin-bottom:10px;
+        ">
+            Team Name
+            <br>
+            <span style="
+                color:#FF6200;
+                font-weight:600;
+                font-size:20px;
+            ">
+                🧠Vector Minds
+            </span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
 # -----------------------------------
 # HEADER
 # -----------------------------------
@@ -543,7 +568,7 @@ enter_pressed = html(
 )
 
 analyze_clicked = st.button(
-    "Analyze Incident",
+    "RootSight Analyze",
     use_container_width=True
 )
 
@@ -646,25 +671,16 @@ if analyze_clicked:
 
                 elif "Low" in response:
                     severity = "Low"
-
-                # -----------------------------------
-                # STORE INCIDENT
-                # -----------------------------------
-
-                incident_id = add_incident_to_knowledgebase(
-                    user_input,
-                    response
-                )
-
+                
                 # -----------------------------------
                 # HEADER
                 # -----------------------------------
 
                 st.markdown("## Incident Analysis")
 
-                st.caption(
-                    f"Incident ID: {incident_id}"
-                )
+                #st.caption(
+                #    f"Incident ID: {incident_id}"
+                #)
 
                 # -----------------------------------
                 # SEVERITY
