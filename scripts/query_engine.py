@@ -150,7 +150,7 @@ client = Groq(
 # MAIN INCIDENT ANALYSIS FUNCTION
 # -----------------------------------
 
-def keyword_search(query, metadata, top_n=3):
+def keyword_search(query, metadata, top_n=2):
 
     query = query.lower()
 
@@ -216,7 +216,7 @@ def analyze_incident(
     # STEP 2 — SEARCH FAISS
     # -----------------------------------
 
-    top_k = 3
+    top_k = 2
 
     all_chunks = []
 
