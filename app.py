@@ -686,29 +686,29 @@ if analyze_clicked:
                 # SEVERITY
                 # -----------------------------------
 
-                if severity == "Critical":
+                #if severity == "Critical":
 
-                    st.error(
-                        f"Severity Level: {severity}"
-                    )
+                 #   st.error(
+                 #       f"Severity Level: {severity}"
+                 #   )
 
-                elif severity == "High":
+                #elif severity == "High":
 
-                    st.warning(
-                        f"Severity Level: {severity}"
-                    )
+                  #  st.warning(
+                  #      f"Severity Level: {severity}"
+                  #  )
 
-                elif severity == "Medium":
+                #elif severity == "Medium":
 
-                    st.info(
-                        f"Severity Level: {severity}"
-                    )
+                #    st.info(
+                #        f"Severity Level: {severity}"
+                #    )
 
-                else:
+                #else:
 
-                    st.success(
-                        f"Severity Level: {severity}"
-                    )
+                #    st.success(
+                #        f"Severity Level: {severity}"
+                #    )
                 
                 # -----------------------------------
                 # KNOWLEDGE SOURCE
@@ -744,9 +744,9 @@ if analyze_clicked:
                         "Semantic operational knowledge retrieved from enterprise vector database"
                     )
 
-                    if retrieved_context:
+                    if retrieved_context and len(retrieved_context) > 0:
 
-                        for i, chunk in enumerate(retrieved_context):
+                        for i, chunk in enumerate(retrieved_context[:3]):
 
                             st.markdown(
                                 f"### Context Chunk {i + 1}"
