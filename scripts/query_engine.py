@@ -150,7 +150,7 @@ client = Groq(
 # MAIN INCIDENT ANALYSIS FUNCTION
 # -----------------------------------
 
-def keyword_search(query, metadata, top_n=5):
+def keyword_search(query, metadata, top_n=3):
 
     query = query.lower()
 
@@ -220,6 +220,8 @@ def analyze_incident(
 
     all_chunks = []
 
+    RELEVANCE_THRESHOLD = 1.125
+    
     if USE_DYNAMIC_REPOSITORY:
 
         print("Using Dynamic Repository")
@@ -253,10 +255,18 @@ def analyze_incident(
         indices[0]
     ):
     
-        if idx < len(active_metadata):
+        if (
+            idx < len(active_metadata)
+            and
+            distance <= RELEVANCE_THRESHOLD
+        ):
     
             all_chunks.append(
                 active_metadata[idx]
+            )
+    
+            retrieved_scores.append(
+                float(distance)
             )
     
             retrieved_scores.append(
@@ -290,7 +300,7 @@ def analyze_incident(
             similar_chunks += 1
     
     print(f"Highly Similar Chunks: {similar_chunks}")
-    RELEVANCE_THRESHOLD = 1.125
+    
     if USE_DYNAMIC_REPOSITORY:
 
         MIN_MATCHES = 1
@@ -328,29 +338,8 @@ def analyze_incident(
     vector_chunks = list(
         dict.fromkeys(all_chunks)
     )
-
-    keyword_chunks = keyword_search(
-        user_query,
-        active_metadata,
-        top_n=3
-    )
-
-    combined_chunks = []
-    seen = set()
     
-    for chunk in vector_chunks + keyword_chunks:
-    
-        if chunk not in seen:
-    
-            combined_chunks.append(chunk)
-    
-            seen.add(chunk)
-    
-    # -----------------------------------
-    # KEEP ONLY TOP 3 CHUNKS
-    # -----------------------------------
-    
-    combined_chunks = combined_chunks[:3]
+    combined_chunks = vector_chunks[:3]
 
     print(
         f"Retrieved {len(combined_chunks)} relevant chunks (max=3)"
