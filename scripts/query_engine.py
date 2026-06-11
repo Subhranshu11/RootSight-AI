@@ -216,7 +216,7 @@ def analyze_incident(
     # STEP 2 — SEARCH FAISS
     # -----------------------------------
 
-    top_k = 5
+    top_k = 3
 
     all_chunks = []
 
@@ -246,21 +246,63 @@ def analyze_incident(
 
         active_metadata = metadata
 
+    retrieved_scores = []
+
     for distance, idx in zip(
         distances[0],
         indices[0]
     ):
-
+    
         if idx < len(active_metadata):
-
+    
             all_chunks.append(
                 active_metadata[idx]
             )
-    best_distance = distances[0][0]
-
-    RELEVANCE_THRESHOLD = 1.5
     
-    if best_distance > RELEVANCE_THRESHOLD:
+            retrieved_scores.append(
+                float(distance)
+            )
+    if not retrieved_scores:
+
+        scope_message = """
+    ## Scope Restriction Notice
+    
+    No relevant enterprise operational knowledge was found.
+    
+    Query is outside the operational knowledge base scope.
+    """
+    
+        if return_context:
+    
+            return {
+                "response": scope_message,
+                "context": [],
+                "knowledge_source": "Out Of Scope"
+            }
+    
+        return scope_message
+    best_score = min(retrieved_scores)
+    similar_chunks = 0
+
+    for score in retrieved_scores:
+    
+        if score <= 1.125:
+            similar_chunks += 1
+    
+    print(f"Highly Similar Chunks: {similar_chunks}")
+    RELEVANCE_THRESHOLD = 1.125
+    if USE_DYNAMIC_REPOSITORY:
+
+        MIN_MATCHES = 1
+    
+    else:
+    
+        MIN_MATCHES = 2
+    if (
+        best_score > RELEVANCE_THRESHOLD
+        or
+        similar_chunks < MIN_MATCHES
+    ):
     
         scope_message = """
     ## Scope Restriction Notice
@@ -295,17 +337,23 @@ def analyze_incident(
 
     combined_chunks = []
     seen = set()
-
+    
     for chunk in vector_chunks + keyword_chunks:
-
+    
         if chunk not in seen:
-
+    
             combined_chunks.append(chunk)
-
+    
             seen.add(chunk)
+    
+    # -----------------------------------
+    # KEEP ONLY TOP 3 CHUNKS
+    # -----------------------------------
+    
+    combined_chunks = combined_chunks[:3]
 
     print(
-        f"Retrieved {len(combined_chunks)} relevant chunks"
+        f"Retrieved {len(combined_chunks)} relevant chunks (max=3)"
     )
 
     # -----------------------------------
