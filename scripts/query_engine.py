@@ -332,7 +332,7 @@ def analyze_incident(
     keyword_chunks = keyword_search(
         user_query,
         active_metadata,
-        top_n=5
+        top_n=3
     )
 
     combined_chunks = []
