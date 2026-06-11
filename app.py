@@ -642,7 +642,7 @@ if analyze_clicked:
                     "context",
                     []
                 )
-
+                retrieved_context = retrieved_context[:3]
                 # -----------------------------------
                 # SCOPE RESTRICTION CHECK
                 # -----------------------------------
@@ -746,7 +746,7 @@ if analyze_clicked:
 
                     if retrieved_context and len(retrieved_context) > 0:
 
-                        for i, chunk in enumerate(retrieved_context[:3]):
+                        for i, chunk in enumerate(retrieved_context):
 
                             st.markdown(
                                 f"### Context Chunk {i + 1}"
