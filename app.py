@@ -118,7 +118,7 @@ if not st.session_state.authenticated:
             """
             <div style="padding-top:120px;">
                 <div class="welcome-title">
-                    Welcome Back...
+                    Welcome Back!
                 </div>
 
                 <div class="welcome-subtitle">
@@ -141,7 +141,7 @@ if not st.session_state.authenticated:
         )
 
         login_clicked = st.button(
-            "Access RootSight",
+            "Get Set RootSight!",
             use_container_width=True
         )
 
