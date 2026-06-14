@@ -22,50 +22,145 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-if "authenticated" not in st.session_state:
-    st.session_state.authenticated = False
-
 TEAM_CORP_KEY = "VectorMinds"
 PASSWORD = "P@$$ion@2026"
-
 if not st.session_state.authenticated:
+    
+    st.markdown("""
+    <style>
 
-    st.markdown(
-        """
-        <div style='text-align:center;padding-top:50px'>
-            <img src='assets/ai_tree.png' width='180'>
-            <h1 style='color:#FF6200;'>RootSight AI</h1>
-            <p>Enterprise Operational Intelligence</p>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    .login-container{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:80px;
+        min-height:85vh;
+        padding:20px;
+    }
 
-    team_key = st.text_input(
-        "Team Corp Key"
-    )
+    .login-left{
+        flex:1;
+        text-align:center;
+    }
 
-    password = st.text_input(
-        "Password",
-        type="password"
-    )
+    .login-right{
+        flex:1;
+        max-width:450px;
+    }
 
-    if st.button("Access Workspace"):
+    .welcome-title{
+        font-size:42px;
+        font-weight:700;
+        color:white;
+        margin-bottom:10px;
+    }
 
-        if (
-            team_key == TEAM_CORP_KEY
-            and
-            password == PASSWORD
-        ):
+    .welcome-subtitle{
+        font-size:16px;
+        color:#9CA3AF;
+        margin-bottom:30px;
+    }
 
-            st.session_state.authenticated = True
-            st.rerun()
+    div[data-testid="stTextInput"] input{
+        border-radius:30px !important;
+        height:55px !important;
+        padding-left:20px !important;
+        border:none !important;
+    }
 
-        else:
+    div[data-testid="stButton"] button{
+        width:100%;
+        border-radius:30px;
+        height:55px;
+        font-size:18px;
+        font-weight:600;
+        background:#FF6200;
+        color:white;
+        border:none;
+    }
 
-            st.error(
-                "Invalid credentials"
-            )
+    div[data-testid="stButton"] button:hover{
+        background:#e45700;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    col1, col2 = st.columns([1.2, 1])
+
+    with col1:
+
+        st.markdown(
+            """
+            <div style="
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                height:70vh;
+            ">
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.image(
+            "assets/ai_tree.png",
+            width=500
+        )
+
+        st.markdown(
+            "</div>",
+            unsafe_allow_html=True
+        )
+
+    with col2:
+
+        st.markdown(
+            """
+            <div style="padding-top:120px;">
+                <div class="welcome-title">
+                    Welcome Back...
+                </div>
+
+                <div class="welcome-subtitle">
+                    RootSight AI Enterprise Operational Intelligence Platform
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        team_key = st.text_input(
+            "Team Corp Key",
+            key="team_key"
+        )
+
+        password = st.text_input(
+            "Password",
+            type="password",
+            key="password"
+        )
+
+        login_clicked = st.button(
+            "Access RootSight",
+            use_container_width=True
+        )
+
+        if login_clicked:
+
+            if (
+                team_key == TEAM_CORP_KEY
+                and
+                password == PASSWORD
+            ):
+
+                st.session_state.authenticated = True
+                st.rerun()
+
+            else:
+
+                st.error(
+                    "Invalid credentials"
+                )
 
     st.stop()
 
@@ -92,34 +187,6 @@ THEME VARIABLES
         --resolve-color: #4DA3FF;
     }
 
-}
-
-/* -----------------------------------
-LOGIN PAGE
------------------------------------ */
-
-.login-card{
-    max-width:550px;
-    margin:auto;
-    margin-top:80px;
-    padding:40px;
-
-    border-radius:24px;
-
-    background:white;
-
-    box-shadow:
-    0px 10px 30px rgba(0,0,0,0.08);
-}
-
-.login-title{
-    font-size:42px;
-    font-weight:700;
-    color:#FF6200;
-}
-
-.login-subtitle{
-    opacity:0.7;
 }
 
 /* -----------------------------------
