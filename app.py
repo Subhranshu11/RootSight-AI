@@ -95,7 +95,12 @@ if not st.session_state["authenticated"]:
     """, unsafe_allow_html=True)
 
     col1, col2 = st.columns([1.2, 1])
-
+    [data-testid="column"]:first-child{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        min-height:100vh;
+    }
     with col1:
 
         st.markdown(
@@ -127,10 +132,6 @@ if not st.session_state["authenticated"]:
             <div style="padding-top:120px;">
                 <div class="welcome-title">
                     Welcome Back!
-                </div>
-
-                <div class="welcome-subtitle">
-                    RootSight AI Enterprise Operational Intelligence Platform
                 </div>
             </div>
             """,
