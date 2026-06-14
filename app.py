@@ -571,7 +571,7 @@ with st.sidebar:
         use_container_width=True
     ):
     
-        st.session_state["authenticated"] = True
+        st.session_state["authenticated"] = False
         st.rerun()
         
 # -----------------------------------
