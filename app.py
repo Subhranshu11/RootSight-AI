@@ -51,11 +51,25 @@ if not st.session_state["authenticated"]:
     ----------------------------------- */
     
     html, body, .stApp{
-        height:100%;
+        height:100vh;
+        margin: 0;
+        padding: 0;
     }
     
     .stApp{
         background:#050B18;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .block-container {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
     }
     
     /* -----------------------------------
@@ -63,8 +77,18 @@ if not st.session_state["authenticated"]:
     ----------------------------------- */
     
     [data-testid="stHorizontalBlock"]{
-        min-height:100vh;
-        align-items:center;
+        width: 100%;
+        height: 100vh;
+        min-height: 100vh;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    [data-testid="column"]{
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     [data-testid="column"]:first-child{
@@ -76,7 +100,8 @@ if not st.session_state["authenticated"]:
     [data-testid="column"]:nth-child(2){
         display:flex;
         justify-content:center;
-        align-items:center;
+        align-items:center
+        flex-direction: column;;
     }
     
     /* -----------------------------------
@@ -87,8 +112,9 @@ if not st.session_state["authenticated"]:
         font-size:60px;
         font-weight:700;
         color:white;
-        margin-bottom:10px;
+        margin-bottom:30px;
         line-height:1.1;
+        text-align: center;
     }
     
     .welcome-subtitle{
@@ -107,11 +133,8 @@ if not st.session_state["authenticated"]:
         padding-left:22px !important;
     
         border:none !important;
-    
         background:#1E2230 !important;
-    
         color:white !important;
-    
         font-size:16px !important;
     }
     
@@ -124,14 +147,12 @@ if not st.session_state["authenticated"]:
         border-radius:30px !important;
     
         height:58px !important;
-    
         font-size:18px !important;
         font-weight:600 !important;
-    
         background:#FF6200 !important;
-    
         color:white !important;
-    
+        background:#FF6200 !important;
+        color:white !important;
         border:none !important;
     }
     
@@ -144,8 +165,9 @@ if not st.session_state["authenticated"]:
     ----------------------------------- */
     
     .block-container{
-        padding-top:1rem !important;
+        padding-top:0rem !important;
         padding-bottom:0rem !important;
+        margin: 0 !important;
     }
     
     /* -----------------------------------
@@ -174,7 +196,7 @@ if not st.session_state["authenticated"]:
                 display:flex;
                 justify-content:center;
                 align-items:center;
-                height:80vh;
+                height:100vh;
             ">
             """,
             unsafe_allow_html=True
@@ -198,10 +220,8 @@ if not st.session_state["authenticated"]:
 
         st.markdown(
             """
-            <div style="padding-top:150px;">
-                <div class="welcome-title">
-                    Welcome Back!
-                </div>
+            <div class="welcome-title">
+                Welcome Back!
             </div>
             """,
             unsafe_allow_html=True
