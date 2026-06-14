@@ -22,9 +22,17 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# -----------------------------------
+# LOGIN SESSION
+# -----------------------------------
+
+if "authenticated" not in st.session_state:
+    st.session_state["authenticated"] = False
+
 TEAM_CORP_KEY = "VectorMinds"
 PASSWORD = "P@$$ion@2026"
-if not st.session_state.authenticated:
+if not st.session_state["authenticated"]:
     
     st.markdown("""
     <style>
@@ -493,7 +501,7 @@ with st.sidebar:
         use_container_width=True
     ):
     
-        st.session_state.authenticated = False
+        st.session_state["authenticated"] = True
         st.rerun()
         
 # -----------------------------------
