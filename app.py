@@ -38,54 +38,125 @@ if not st.session_state["authenticated"]:
     st.markdown("""
     <style>
 
-    /* Hide Streamlit default elements */
+    /* -----------------------------------
+    HIDE STREAMLIT ELEMENTS
+    ----------------------------------- */
+    
     #MainMenu {visibility:hidden;}
     footer {visibility:hidden;}
     header {visibility:hidden;}
-
-    /* Main Login Layout */
-
+    
+    /* -----------------------------------
+    FULL PAGE
+    ----------------------------------- */
+    
+    html, body, .stApp{
+        height:100%;
+    }
+    
+    .stApp{
+        background:#050B18;
+    }
+    
+    /* -----------------------------------
+    SPLIT SCREEN LAYOUT
+    ----------------------------------- */
+    
+    [data-testid="stHorizontalBlock"]{
+        min-height:100vh;
+        align-items:center;
+    }
+    
+    [data-testid="column"]:first-child{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+    
+    [data-testid="column"]:nth-child(2){
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+    
+    /* -----------------------------------
+    WELCOME TEXT
+    ----------------------------------- */
+    
     .welcome-title{
-        font-size:52px;
+        font-size:60px;
         font-weight:700;
         color:white;
-        margin-bottom:8px;
+        margin-bottom:10px;
+        line-height:1.1;
     }
-
+    
     .welcome-subtitle{
-        font-size:16px;
+        font-size:17px;
         color:#9CA3AF;
-        margin-bottom:30px;
+        margin-bottom:35px;
     }
-
-    /* Inputs */
-
+    
+    /* -----------------------------------
+    INPUTS
+    ----------------------------------- */
+    
     div[data-testid="stTextInput"] input{
         border-radius:30px !important;
-        height:55px !important;
-        padding-left:20px !important;
+        height:58px !important;
+        padding-left:22px !important;
+    
         border:none !important;
+    
         background:#1E2230 !important;
+    
         color:white !important;
+    
+        font-size:16px !important;
     }
-
-    /* Login Button */
-
+    
+    /* -----------------------------------
+    BUTTON
+    ----------------------------------- */
+    
     div[data-testid="stButton"] button{
         width:100%;
-        border-radius:30px;
-        height:55px;
-        font-size:18px;
-        font-weight:600;
-        background:#FF6200;
-        color:white;
-        border:none;
+        border-radius:30px !important;
+    
+        height:58px !important;
+    
+        font-size:18px !important;
+        font-weight:600 !important;
+    
+        background:#FF6200 !important;
+    
+        color:white !important;
+    
+        border:none !important;
     }
-
+    
     div[data-testid="stButton"] button:hover{
-        background:#e45700;
+        background:#e45700 !important;
     }
-
+    
+    /* -----------------------------------
+    REMOVE EXTRA TOP SPACE
+    ----------------------------------- */
+    
+    .block-container{
+        padding-top:1rem !important;
+        padding-bottom:0rem !important;
+    }
+    
+    /* -----------------------------------
+    IMAGE CENTERING
+    ----------------------------------- */
+    
+    img{
+        display:block;
+        margin:auto;
+    }
+    
     </style>
     """, unsafe_allow_html=True)
 
