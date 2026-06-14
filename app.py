@@ -22,6 +22,52 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+TEAM_CORP_KEY = "VectorMinds"
+PASSWORD = "P@$$ion@2026"
+
+if not st.session_state.authenticated:
+
+    st.markdown(
+        """
+        <div style='text-align:center;padding-top:50px'>
+            <img src='assets/ai_tree.png' width='180'>
+            <h1 style='color:#FF6200;'>RootSight AI</h1>
+            <p>Enterprise Operational Intelligence</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    team_key = st.text_input(
+        "Team Corp Key"
+    )
+
+    password = st.text_input(
+        "Password",
+        type="password"
+    )
+
+    if st.button("Access Workspace"):
+
+        if (
+            team_key == TEAM_CORP_KEY
+            and
+            password == PASSWORD
+        ):
+
+            st.session_state.authenticated = True
+            st.rerun()
+
+        else:
+
+            st.error(
+                "Invalid credentials"
+            )
+
+    st.stop()
 
 # -----------------------------------
 # ADAPTIVE CSS (STREAMLIT LIGHT/DARK)
@@ -46,6 +92,34 @@ THEME VARIABLES
         --resolve-color: #4DA3FF;
     }
 
+}
+
+/* -----------------------------------
+LOGIN PAGE
+----------------------------------- */
+
+.login-card{
+    max-width:550px;
+    margin:auto;
+    margin-top:80px;
+    padding:40px;
+
+    border-radius:24px;
+
+    background:white;
+
+    box-shadow:
+    0px 10px 30px rgba(0,0,0,0.08);
+}
+
+.login-title{
+    font-size:42px;
+    font-weight:700;
+    color:#FF6200;
+}
+
+.login-subtitle{
+    opacity:0.7;
 }
 
 /* -----------------------------------
@@ -345,7 +419,16 @@ with st.sidebar:
         """,
         unsafe_allow_html=True
     )
+    st.divider()
 
+    if st.button(
+        "Logout",
+        use_container_width=True
+    ):
+    
+        st.session_state.authenticated = False
+        st.rerun()
+        
 # -----------------------------------
 # HEADER
 # -----------------------------------
