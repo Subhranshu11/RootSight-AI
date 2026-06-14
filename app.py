@@ -615,12 +615,12 @@ if analyze_clicked:
                     "Historical Knowledge Base"
                 )
 
-                display_response = re.sub(
-                    r"## Severity.*?(?=##|$)",
-                    "",
-                    display_response,
-                    flags=re.DOTALL
-                )
+                #display_response = re.sub(
+                #    r"## Severity.*?(?=##|$)",
+                #    "",
+                #    display_response,
+                #    flags=re.DOTALL
+                #)
 
                 display_response = re.sub(
                     r"## Affected Components.*?(?=##|$)",
@@ -661,16 +661,16 @@ if analyze_clicked:
                 # DETECT SEVERITY
                 # -----------------------------------
 
-                severity = "Medium"
+                #severity = "Medium"
+                
+                #if "Critical" in response:
+                #    severity = "Critical"
 
-                if "Critical" in response:
-                    severity = "Critical"
+                #elif "High" in response:
+                #    severity = "High"
 
-                elif "High" in response:
-                    severity = "High"
-
-                elif "Low" in response:
-                    severity = "Low"
+                #elif "Low" in response:
+                #    severity = "Low"
                 
                 # -----------------------------------
                 # HEADER
