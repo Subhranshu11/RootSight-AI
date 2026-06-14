@@ -32,35 +32,24 @@ if "authenticated" not in st.session_state:
 
 TEAM_CORP_KEY = "VectorMinds"
 PASSWORD = "P@$$ion@2026"
+
 if not st.session_state["authenticated"]:
-    
+
     st.markdown("""
     <style>
 
-    .login-container{
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        gap:80px;
-        min-height:85vh;
-        padding:20px;
-    }
+    /* Hide Streamlit default elements */
+    #MainMenu {visibility:hidden;}
+    footer {visibility:hidden;}
+    header {visibility:hidden;}
 
-    .login-left{
-        flex:1;
-        text-align:center;
-    }
-
-    .login-right{
-        flex:1;
-        max-width:450px;
-    }
+    /* Main Login Layout */
 
     .welcome-title{
-        font-size:42px;
+        font-size:52px;
         font-weight:700;
         color:white;
-        margin-bottom:10px;
+        margin-bottom:8px;
     }
 
     .welcome-subtitle{
@@ -69,12 +58,18 @@ if not st.session_state["authenticated"]:
         margin-bottom:30px;
     }
 
+    /* Inputs */
+
     div[data-testid="stTextInput"] input{
         border-radius:30px !important;
         height:55px !important;
         padding-left:20px !important;
         border:none !important;
+        background:#1E2230 !important;
+        color:white !important;
     }
+
+    /* Login Button */
 
     div[data-testid="stButton"] button{
         width:100%;
@@ -95,12 +90,11 @@ if not st.session_state["authenticated"]:
     """, unsafe_allow_html=True)
 
     col1, col2 = st.columns([1.2, 1])
-    [data-testid="column"]:first-child{
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        min-height:100vh;
-    }
+
+    # -----------------------------------
+    # LEFT SIDE (LION IMAGE)
+    # -----------------------------------
+
     with col1:
 
         st.markdown(
@@ -109,7 +103,7 @@ if not st.session_state["authenticated"]:
                 display:flex;
                 justify-content:center;
                 align-items:center;
-                height:70vh;
+                height:80vh;
             ">
             """,
             unsafe_allow_html=True
@@ -117,7 +111,7 @@ if not st.session_state["authenticated"]:
 
         st.image(
             "assets/ai_tree.png",
-            width=500
+            width=550
         )
 
         st.markdown(
@@ -125,13 +119,21 @@ if not st.session_state["authenticated"]:
             unsafe_allow_html=True
         )
 
+    # -----------------------------------
+    # RIGHT SIDE (LOGIN FORM)
+    # -----------------------------------
+
     with col2:
 
         st.markdown(
             """
-            <div style="padding-top:120px;">
+            <div style="padding-top:150px;">
                 <div class="welcome-title">
                     Welcome Back!
+                </div>
+
+                <div class="welcome-subtitle">
+                    RootSight AI Enterprise Operational Intelligence Platform
                 </div>
             </div>
             """,
@@ -162,7 +164,7 @@ if not st.session_state["authenticated"]:
                 password == PASSWORD
             ):
 
-                st.session_state.authenticated = True
+                st.session_state["authenticated"] = True
                 st.rerun()
 
             else:
