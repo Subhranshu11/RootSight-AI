@@ -131,10 +131,6 @@ if not st.session_state["authenticated"]:
                 <div class="welcome-title">
                     Welcome Back!
                 </div>
-
-                <div class="welcome-subtitle">
-                    RootSight AI Enterprise Operational Intelligence Platform
-                </div>
             </div>
             """,
             unsafe_allow_html=True
