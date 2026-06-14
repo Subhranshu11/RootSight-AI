@@ -361,10 +361,6 @@ def analyze_incident(
     )
 
     print(
-        f"Keyword Chunks: {len(keyword_chunks)}"
-    )
-
-    print(
         f"Combined Chunks: {len(combined_chunks)}"
     )
 
