@@ -99,17 +99,20 @@ if not st.session_state["authenticated"]:
     ----------------------------------- */
     
     .welcome-title{
-        font-size:60px;
+        font-size:64px;
         font-weight:700;
         color:white;
-        margin-bottom:5px;
-        line-height:1.1;
+    
+        margin-bottom:8px;   /* was 40px */
+        line-height:1.05;
     }
     
     .welcome-subtitle{
         font-size:17px;
         color:#9CA3AF;
-        margin-bottom:35px;
+    
+        margin-top:0px;
+        margin-bottom:25px;
     }
     
     /* -----------------------------------
