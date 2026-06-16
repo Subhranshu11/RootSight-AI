@@ -483,25 +483,38 @@ STATUS CARDS
 ----------------------------------- */
 
 .status-card{
-    border:1px solid rgba(0,0,0,0.08);
+    border:1px solid rgba(128,128,128,0.15);
     border-radius:18px;
     padding:22px;
 
     text-align:center;
 
-    background:white;
+    background-color:rgba(255,255,255,0.02);
+
+    transition:all 0.25s ease;
+}
+
+.status-card:hover{
+    transform:translateY(-2px);
+    border-color:#FF6200;
 }
 
 .status-label{
-    font-size:14px;
-    color:#6B7280;
+    font-size:13px;
+    opacity:0.7;
     margin-bottom:10px;
+    font-weight:500;
 }
 
 .status-value{
-    font-size:32px;
+    font-size:30px;
     font-weight:700;
     color:#FF6200;
+}
+
+.status-live{
+    font-size:22px;
+    font-weight:700;
 }
 </style>
 """, unsafe_allow_html=True)
