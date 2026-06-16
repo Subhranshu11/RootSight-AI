@@ -812,6 +812,7 @@ with status_col2:
 with status_col3:
     st.markdown(f"""
     <div class="status-card">
+        <div class="status-label">
             AI Engine
         </div>
         <div class="status-value">
