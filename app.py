@@ -10,12 +10,9 @@ from scripts.query_engine import (
 )
 
 from scripts.dynamic_ingest import (
-    build_dynamic_repository,
-    dynamic_metadata
+    build_dynamic_repository
 )
 
-if not dynamic_metadata:
-    dynamic_metadata = metadata
 # -----------------------------------
 # PAGE CONFIG
 # -----------------------------------
@@ -745,8 +742,23 @@ except:
 # OPERATIONAL STATUS BAR
 # -----------------------------------
 
-knowledge_base = dynamic_metadata if dynamic_metadata else metadata
-knowledge_chunks = len(knowledge_base)
+knowledge_chunks = len(metadata)
+
+if os.path.exists("dynamic_vectorstore/dynamic_metadata.pkl"):
+    try:
+        import pickle
+
+        with open(
+            "dynamic_vectorstore/dynamic_metadata.pkl",
+            "rb"
+        ) as f:
+
+            dynamic_chunks = pickle.load(f)
+
+        knowledge_chunks = len(dynamic_chunks)
+
+    except:
+        pass
 
 documents_loaded = (
     len(os.listdir("dynamic_workspace"))
