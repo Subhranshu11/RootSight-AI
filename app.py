@@ -262,13 +262,16 @@ if not st.session_state["authenticated"]:
     with col1:
         st.image(
             "assets/ai_tree.png",
-            width=500
+            width=600
         )
     
     with col2:
         st.markdown("""
         <div class="welcome-title">
             Welcome Back!
+        </div>
+        <div class="welcome-subtitle">
+            RootSight AI Enterprise Operational Intelligence Platform
         </div>
         """, unsafe_allow_html=True)
     
