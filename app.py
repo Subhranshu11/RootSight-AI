@@ -203,6 +203,27 @@ if not st.session_state["authenticated"]:
         display:block;
         margin:auto;
     }
+    /* LOGO */
+
+    [data-testid="column"]:nth-child(2) img{
+        max-width:500px !important;
+        margin-left:40px !important;
+    }
+    
+    /* LOGIN PANEL */
+    
+    [data-testid="column"]:nth-child(3){
+        padding-right:80px !important;
+    }
+    
+    /* TITLE */
+    
+    .welcome-title{
+        font-size:64px;
+        font-weight:700;
+        color:white;
+        margin-bottom:40px;
+    }
     /* Kill Streamlit input wrapper */
     
     div[data-baseweb="input"]{
@@ -236,45 +257,32 @@ if not st.session_state["authenticated"]:
     </style>
     """, unsafe_allow_html=True)
 
-    col1, col2 = st.columns([1.2, 1])
-
-    # -----------------------------------
-    # LEFT SIDE (LION IMAGE)
-    # -----------------------------------
+    col0, col1, col2, col3 = st.columns([0.15, 1, 0.9, 0.15])
 
     with col1:
-
         st.image(
             "assets/ai_tree.png",
-            width=550
+            width=500
         )
-
-    # -----------------------------------
-    # RIGHT SIDE (LOGIN FORM)
-    # -----------------------------------
-
+    
     with col2:
-
-        st.markdown(
-            """
-            <div class="welcome-title">
-                Welcome Back!
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
+        st.markdown("""
+        <div class="welcome-title">
+            Welcome Back!
+        </div>
+        """, unsafe_allow_html=True)
+    
         team_key = st.text_input(
             "Username",
             key="team_key"
         )
-
+    
         password = st.text_input(
             "Password",
             type="password",
             key="password"
         )
-
+    
         login_clicked = st.button(
             "Get Set RootSight!",
             use_container_width=True
