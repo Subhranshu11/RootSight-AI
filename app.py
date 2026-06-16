@@ -10,6 +10,7 @@ from scripts.query_engine import (
 
 from scripts.dynamic_ingest import (
     build_dynamic_repository
+    dynamic_metadata
 )
 
 # -----------------------------------
@@ -741,7 +742,7 @@ except:
 # OPERATIONAL STATUS BAR
 # -----------------------------------
 
-knowledge_chunks = len(metadata)
+knowledge_chunks = len(dynamic_metadata)
 
 documents_loaded = (
     len(os.listdir("dynamic_workspace"))
