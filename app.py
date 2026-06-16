@@ -539,12 +539,10 @@ with st.sidebar:
     st.markdown("### Workspace")
 
     st.markdown("""
-- Incident RCA
 - Historical Correlation
-- Operational Intelligence
+- Operational Runbooks
 - Enterprise Incident Memory
 - RCA Knowledge Retrieval
-- Operational Playbooks
 """)
 
     st.divider()
@@ -552,12 +550,11 @@ with st.sidebar:
     st.markdown("### Supported Operations")
 
     st.markdown("""
-- Deployment Failures
-- Scheduler Issues
-- ETL Disruptions
-- Dashboard Failures
-- Reporting Incidents
-- Production Alerts
+- SQL Alerts
+- Oracle Incidents
+- SAP BI Issues
+- Azure Pipeline Issues
+- Power BI Issues
 """)
 
     st.divider()
