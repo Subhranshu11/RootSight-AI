@@ -53,7 +53,7 @@ if not st.session_state["authenticated"]:
     html, body, .stApp{
         height:100vh;
         margin: 0;
-        padding: 0;
+        padding: 10;
     }
     
     .stApp{
