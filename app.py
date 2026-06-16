@@ -190,26 +190,9 @@ if not st.session_state["authenticated"]:
 
     with col1:
 
-        st.markdown(
-            """
-            <div style="
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                height:100vh;
-            ">
-            """,
-            unsafe_allow_html=True
-        )
-
         st.image(
             "assets/ai_tree.png",
             width=550
-        )
-
-        st.markdown(
-            "</div>",
-            unsafe_allow_html=True
         )
 
     # -----------------------------------
