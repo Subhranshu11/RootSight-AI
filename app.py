@@ -102,7 +102,7 @@ if not st.session_state["authenticated"]:
         font-size:60px;
         font-weight:700;
         color:white;
-        margin-bottom:25px;
+        margin-bottom:5px;
         line-height:1.1;
     }
     
