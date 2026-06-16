@@ -112,7 +112,7 @@ if not st.session_state["authenticated"]:
         color:#9CA3AF;
     
         margin-top:0px;
-        margin-bottom:20px;
+        margin-bottom:30px;
     }
     
     /* -----------------------------------
@@ -177,7 +177,6 @@ if not st.session_state["authenticated"]:
     div[data-testid="stCheckbox"] label{
         color:white !important;
         font-size:14px !important;
-        font-color: white !important;
     }
     div[data-testid="stButton"] button{
         width:100%;
@@ -231,7 +230,7 @@ if not st.session_state["authenticated"]:
         font-size:64px;
         font-weight:700;
         color:white;
-        margin-bottom:40px;
+        margin-bottom:0px;
     }
     /* Kill Streamlit input wrapper */
     
@@ -299,6 +298,7 @@ if not st.session_state["authenticated"]:
         
         remember_me = st.checkbox(
             "Remember Me",
+            font-color: white,
             value=True
         )
         
