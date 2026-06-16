@@ -812,10 +812,9 @@ with status_col2:
 with status_col3:
     st.markdown(f"""
     <div class="status-card">
-        <div style="opacity:0.7; font-size:13px; margin-bottom:4px;">
             AI Engine
         </div>
-        <div style="font-weight:600; font-size:16px; color:#1F2937;">
+        <div class="status-value">
             {ai_status}
         </div>
     </div>
