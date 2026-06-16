@@ -191,7 +191,36 @@ if not st.session_state["authenticated"]:
         display:block;
         margin:auto;
     }
+    /* Kill Streamlit input wrapper */
     
+    div[data-baseweb="input"]{
+        border:none !important;
+        background:#1E2230 !important;
+        box-shadow:none !important;
+        border-radius:30px !important;
+    }
+    
+    div[data-baseweb="input"] > div{
+        border:none !important;
+        background:#1E2230 !important;
+        box-shadow:none !important;
+        border-radius:30px !important;
+    }
+    
+    /* Password field wrapper */
+    
+    div[data-baseweb="base-input"]{
+        border:none !important;
+        background:#1E2230 !important;
+        box-shadow:none !important;
+    }
+    
+    /* Remove white focus ring */
+    
+    *:focus{
+        outline:none !important;
+        box-shadow:none !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
