@@ -188,7 +188,13 @@ if not st.session_state["authenticated"]:
     div[data-testid="stButton"] button:hover{
         background:#e45700 !important;
     }
+    /* RIGHT SIDE LOGIN PANEL */
     
+    [data-testid="column"]:nth-child(2){
+        padding-left:80px !important;
+        padding-right:120px !important;
+        box-sizing:border-box;
+    }
     /* -----------------------------------
     IMAGE
     ----------------------------------- */
