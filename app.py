@@ -9,7 +9,7 @@ from scripts.query_engine import (
 )
 
 from scripts.dynamic_ingest import (
-    build_dynamic_repository
+    build_dynamic_repository,
     dynamic_metadata
 )
 
