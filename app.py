@@ -103,8 +103,8 @@ if not st.session_state["authenticated"]:
         font-weight:700;
         color:white;
     
-        margin-bottom:8px;   /* was 40px */
-        line-height:1.05;
+        margin-bottom:0px;   /* was 40px */
+        line-height:1;
     }
     
     .welcome-subtitle{
@@ -112,7 +112,7 @@ if not st.session_state["authenticated"]:
         color:#9CA3AF;
     
         margin-top:0px;
-        margin-bottom:25px;
+        margin-bottom:20px;
     }
     
     /* -----------------------------------
@@ -280,11 +280,13 @@ if not st.session_state["authenticated"]:
     
         team_key = st.text_input(
             "Username",
+            placeholder="Enter your username...
             key="team_key"
         )
     
         password = st.text_input(
             "Password",
+            placeholder="*****"
             type="password",
             key="password"
         )
