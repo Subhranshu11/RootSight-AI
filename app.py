@@ -5,7 +5,8 @@ from groq import Groq
 
 from scripts.query_engine import (
     analyze_incident,
-    add_incident_to_knowledgebase
+    add_incident_to_knowledgebase,
+    metadata
 )
 
 from scripts.dynamic_ingest import (
@@ -13,6 +14,8 @@ from scripts.dynamic_ingest import (
     dynamic_metadata
 )
 
+if not dynamic_metadata:
+    dynamic_metadata = metadata
 # -----------------------------------
 # PAGE CONFIG
 # -----------------------------------
@@ -742,7 +745,8 @@ except:
 # OPERATIONAL STATUS BAR
 # -----------------------------------
 
-knowledge_chunks = len(dynamic_metadata)
+knowledge_base = dynamic_metadata if dynamic_metadata else metadata
+knowledge_chunks = len(knowledge_base)
 
 documents_loaded = (
     len(os.listdir("dynamic_workspace"))
