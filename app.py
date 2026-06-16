@@ -298,7 +298,7 @@ if not st.session_state["authenticated"]:
         
         remember_me = st.checkbox(
             "Remember Me",
-            font-color: white,
+            'font-color: white',
             value=True
         )
         
