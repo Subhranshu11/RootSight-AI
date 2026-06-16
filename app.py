@@ -775,7 +775,6 @@ with status_col1:
         <div class="status-label">
             Knowledge Chunks
         </div>
-
         <div class="status-value">
             {knowledge_chunks}
         </div>
@@ -785,14 +784,13 @@ with status_col1:
 
 with status_col2:
 
-    st.markdown(f"""
+    st.markdown("""
     <div class="status-card">
         <div class="status-label">
-            Documents Loaded
+            Knowledge Route
         </div>
-
         <div class="status-value">
-            {documents_loaded}
+            🟢 LIVE
         </div>
     </div>
     """,
