@@ -150,7 +150,13 @@ if not st.session_state["authenticated"]:
         outline:none !important;
         box-shadow:none !important;
     }
-    
+    /* Username / Password Labels */
+
+    label[data-testid="stWidgetLabel"]{
+        color:white !important;
+        font-size:15px !important;
+        font-weight:500 !important;
+    }
     /* -----------------------------------
     PASSWORD BOX
     ----------------------------------- */
