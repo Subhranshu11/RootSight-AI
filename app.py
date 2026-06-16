@@ -325,7 +325,9 @@ if not st.session_state["authenticated"]:
                 st.error(
                     "Invalid credentials"
                 )
-
+        st.caption(
+            "RootSight AI v1.0 | VectorMinds"
+        )
     st.stop()
 
 # -----------------------------------
