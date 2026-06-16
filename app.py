@@ -172,7 +172,12 @@ if not st.session_state["authenticated"]:
     /* -----------------------------------
     BUTTON
     ----------------------------------- */
-    
+    /* Remember Me checkbox */
+
+    div[data-testid="stCheckbox"] label{
+        color:white !important;
+        font-size:14px !important;
+    }
     div[data-testid="stButton"] button{
         width:100%;
         border-radius:30px !important;
@@ -290,7 +295,12 @@ if not st.session_state["authenticated"]:
             type="password",
             key="password"
         )
-    
+        
+        remember_me = st.checkbox(
+            "Remember Me",
+            value=True
+        )
+        
         login_clicked = st.button(
             "Get Set RootSight!",
             use_container_width=True
