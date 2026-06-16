@@ -177,6 +177,7 @@ if not st.session_state["authenticated"]:
     div[data-testid="stCheckbox"] label{
         color:white !important;
         font-size:14px !important;
+        font-color: white !important;
     }
     div[data-testid="stButton"] button{
         width:100%;
