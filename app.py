@@ -786,7 +786,7 @@ with status_col1:
     st.markdown(f"""
     <div class="status-card">
         <div class="status-label">
-            Knowledge Chunks
+            Context Articles
         </div>
         <div class="status-value">
             {knowledge_chunks}
