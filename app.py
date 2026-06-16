@@ -481,15 +481,27 @@ FOOTER
 STATUS CARDS
 ----------------------------------- */
 
-.status-card {
-    color: inherit;
-    padding: 12px;
-    border-radius: 12px;
-    border: 1px solid rgba(128,128,128,0.12);
-    background-color: rgba(255,255,255,0.02);
-    text-align: center;
+.status-card{
+    border:1px solid rgba(0,0,0,0.08);
+    border-radius:18px;
+    padding:22px;
+
+    text-align:center;
+
+    background:white;
 }
 
+.status-label{
+    font-size:14px;
+    color:#6B7280;
+    margin-bottom:10px;
+}
+
+.status-value{
+    font-size:32px;
+    font-weight:700;
+    color:#FF6200;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -681,17 +693,6 @@ Enterprise Operational Intelligence & RCA Workspace
 # HEALTH CHECKS
 # -----------------------------------
 
-# Knowledge Base Status
-
-if (
-    os.path.exists("vectorstore/faiss_index.bin")
-    and
-    os.path.exists("vectorstore/metadata.pkl")
-):
-    kb_status = "🟢 Connected"
-else:
-    kb_status = "🔴 Disconnected"
-
 # AI Engine Status
 
 try:
@@ -721,18 +722,6 @@ except Exception:
 
     ai_status = "🔴 Offline"
 
-# System Status
-
-if (
-    kb_status.startswith("🟢")
-    and
-    ai_status.startswith("🟢")
-):
-    system_status = "🟢 Operational"
-
-else:
-    system_status = "🔴 Degraded"
-
 # -----------------------------------
 # DYNAMIC STATUS CHECKS
 # -----------------------------------
@@ -748,58 +737,49 @@ try:
 except:
     ai_status = "🟢 Active"
 
-# Knowledge Base Status
-
-try:
-    kb_status = (
-        "🟢 Connected"
-        if os.path.exists("vectorstore/metadata.pkl") and os.path.getsize("vectorstore/metadata.pkl") > 0
-        else "🔴 Disconnected"
-    )
-except:
-    kb_status = "🔴 Disconnected"
-
-# System Status
-
-try:
-    system_status = (
-        "🟢 Operational"
-        if os.path.exists("vectorstore/faiss_index.bin") and os.path.getsize("vectorstore/faiss_index.bin") > 0
-        else "🔴 Down"
-    )
-except:
-    system_status = "🔴 Down"
-
 # -----------------------------------
 # OPERATIONAL STATUS BAR
 # -----------------------------------
 
+knowledge_chunks = len(metadata)
+
+documents_loaded = (
+    len(os.listdir("dynamic_workspace"))
+    if os.path.exists("dynamic_workspace")
+    else 0
+)
 
 status_col1, status_col2, status_col3 = st.columns(3)
 
 with status_col1:
+
     st.markdown(f"""
     <div class="status-card">
-        <div style="opacity:0.7; font-size:13px; margin-bottom:4px;">
-            System Status
+        <div class="status-label">
+            Knowledge Chunks
         </div>
-        <div style="font-weight:600; font-size:16px; color:#1F2937;">
-            {system_status}
+
+        <div class="status-value">
+            {knowledge_chunks}
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True)
 
 with status_col2:
+
     st.markdown(f"""
     <div class="status-card">
-        <div style="opacity:0.7; font-size:13px; margin-bottom:4px;">
-            Knowledge Base
+        <div class="status-label">
+            Documents Loaded
         </div>
-        <div style="font-weight:600; font-size:16px; color:#1F2937;">
-            {kb_status}
+
+        <div class="status-value">
+            {documents_loaded}
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True)
 
 with status_col3:
     st.markdown(f"""
