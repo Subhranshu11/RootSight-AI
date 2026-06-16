@@ -280,13 +280,13 @@ if not st.session_state["authenticated"]:
     
         team_key = st.text_input(
             "Username",
-            placeholder="Enter your username..."
+            placeholder="Enter your username...",
             key="team_key"
         )
     
         password = st.text_input(
             "Password",
-            placeholder="*****"
+            placeholder="*****",
             type="password",
             key="password"
         )
