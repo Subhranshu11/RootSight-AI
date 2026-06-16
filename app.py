@@ -37,7 +37,7 @@ if not st.session_state["authenticated"]:
 
     st.markdown("""
     <style>
-
+    
     /* -----------------------------------
     HIDE STREAMLIT ELEMENTS
     ----------------------------------- */
@@ -52,24 +52,19 @@ if not st.session_state["authenticated"]:
     
     html, body, .stApp{
         height:100vh;
-        margin: 0;
-        padding: 10;
+        margin:0;
+        padding:0;
     }
     
     .stApp{
         background:#050B18;
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
     
-    .block-container {
-        width: 100%;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 !important;
+    .block-container{
+        width:100%;
+        height:100vh;
+        padding:0 !important;
+        margin:0 !important;
     }
     
     /* -----------------------------------
@@ -77,18 +72,13 @@ if not st.session_state["authenticated"]:
     ----------------------------------- */
     
     [data-testid="stHorizontalBlock"]{
-        width: 100%;
-        height: 100vh;
-        min-height: 100vh;
-        align-items: center !important;
-        justify-content: center !important;
+        width:100%;
+        min-height:100vh;
+        align-items:center !important;
     }
     
     [data-testid="column"]{
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        min-height:100vh;
     }
     
     [data-testid="column"]:first-child{
@@ -100,8 +90,8 @@ if not st.session_state["authenticated"]:
     [data-testid="column"]:nth-child(2){
         display:flex;
         justify-content:center;
-        align-items:center
-        flex-direction: column;;
+        align-items:center;
+        flex-direction:column;
     }
     
     /* -----------------------------------
@@ -112,9 +102,8 @@ if not st.session_state["authenticated"]:
         font-size:60px;
         font-weight:700;
         color:white;
-        margin-bottom:30px;
+        margin-bottom:25px;
         line-height:1.1;
-        text-align: center;
     }
     
     .welcome-subtitle{
@@ -127,15 +116,48 @@ if not st.session_state["authenticated"]:
     INPUTS
     ----------------------------------- */
     
-    div[data-testid="stTextInput"] input{
-        border-radius:30px !important;
-        height:58px !important;
-        padding-left:22px !important;
+    /* Outer Streamlit container */
     
+    .stTextInput > div > div{
+        background:#1E2230 !important;
         border:none !important;
+        box-shadow:none !important;
+        border-radius:30px !important;
+    }
+    
+    /* Actual input */
+    
+    div[data-testid="stTextInput"] input{
         background:#1E2230 !important;
         color:white !important;
+    
+        border:none !important;
+        outline:none !important;
+        box-shadow:none !important;
+    
+        border-radius:30px !important;
+        height:58px !important;
+    
+        padding-left:22px !important;
+    
         font-size:16px !important;
+    }
+    
+    /* Focus state */
+    
+    div[data-testid="stTextInput"] input:focus{
+        border:none !important;
+        outline:none !important;
+        box-shadow:none !important;
+    }
+    
+    /* -----------------------------------
+    PASSWORD BOX
+    ----------------------------------- */
+    
+    div[data-testid="stTextInput"]{
+        border:none !important;
+        box-shadow:none !important;
     }
     
     /* -----------------------------------
@@ -147,12 +169,13 @@ if not st.session_state["authenticated"]:
         border-radius:30px !important;
     
         height:58px !important;
+    
         font-size:18px !important;
         font-weight:600 !important;
+    
         background:#FF6200 !important;
         color:white !important;
-        background:#FF6200 !important;
-        color:white !important;
+    
         border:none !important;
     }
     
@@ -161,17 +184,7 @@ if not st.session_state["authenticated"]:
     }
     
     /* -----------------------------------
-    REMOVE EXTRA TOP SPACE
-    ----------------------------------- */
-    
-    .block-container{
-        padding-top:0rem !important;
-        padding-bottom:0rem !important;
-        margin: 0 !important;
-    }
-    
-    /* -----------------------------------
-    IMAGE CENTERING
+    IMAGE
     ----------------------------------- */
     
     img{
