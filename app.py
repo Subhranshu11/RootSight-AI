@@ -842,10 +842,10 @@ user_input = st.text_area(
     placeholder="""
 Example:
 
-Scheduler service stopped unexpectedly after deployment.
-Dashboard refresh jobs failed across production.
-ETL queue stuck for 45 minutes.
-Users unable to access refreshed reports.
+SAP BI4 Launchpad not opening.
+SQL Developer is not working.
+Pipeline is not starting and remains in queued state.
+Oracle instance fails to start.
 
 (Press Enter to Analyze • Shift+Enter for new line)
 """
