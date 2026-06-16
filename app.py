@@ -31,7 +31,7 @@ if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
 
 TEAM_CORP_KEY = "VectorMinds"
-PASSWORD = "P@$$ion@2026"
+PASSWORD = "$RG11"
 
 if not st.session_state["authenticated"]:
 
@@ -228,7 +228,7 @@ if not st.session_state["authenticated"]:
         )
 
         team_key = st.text_input(
-            "Team Corp Key",
+            "Username",
             key="team_key"
         )
 
