@@ -178,6 +178,9 @@ if not st.session_state["authenticated"]:
         color:white !important;
         font-size:14px !important;
     }
+    div[data-testid="stCheckbox"] p{
+        color:white !important;
+    }
     div[data-testid="stButton"] button{
         width:100%;
         border-radius:30px !important;
@@ -298,7 +301,6 @@ if not st.session_state["authenticated"]:
         
         remember_me = st.checkbox(
             "Remember Me",
-            'font-color: white',
             value=True
         )
         
