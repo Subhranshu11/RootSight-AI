@@ -757,21 +757,12 @@ except:
 
 knowledge_chunks = len(metadata)
 
-if os.path.exists("dynamic_vectorstore/dynamic_metadata.pkl"):
-    try:
-        import pickle
-
-        with open(
-            "dynamic_vectorstore/dynamic_metadata.pkl",
-            "rb"
-        ) as f:
-
-            dynamic_chunks = pickle.load(f)
-
-        knowledge_chunks = len(dynamic_chunks)
-
-    except:
-        pass
+if st.session_state.get("dynamic_kb_active", False):
+    knowledge_chunks = st.session_state.get(
+        "dynamic_chunk_count",
+        len(metadata)
+    )
+    
 
 documents_loaded = (
     len(os.listdir("dynamic_workspace"))
