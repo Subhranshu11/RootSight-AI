@@ -605,7 +605,20 @@ with st.sidebar:
         try:
 
             build_dynamic_repository()
+            import pickle
 
+            with open(
+                "dynamic_vectorstore/dynamic_metadata.pkl",
+                "rb"
+            ) as f:
+        
+                dynamic_chunks = pickle.load(f)
+        
+            st.session_state["dynamic_kb_active"] = True
+        
+            st.session_state["dynamic_chunk_count"] = len(
+                dynamic_chunks
+            )
             st.markdown(
                 f"""
                 <div style="
