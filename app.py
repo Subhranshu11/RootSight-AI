@@ -696,6 +696,17 @@ with st.sidebar:
     ):
     
         st.session_state["authenticated"] = False
+    
+        st.session_state.pop(
+            "dynamic_kb_active",
+            None
+        )
+    
+        st.session_state.pop(
+            "dynamic_chunk_count",
+            None
+        )
+    
         st.rerun()
         
 # -----------------------------------
