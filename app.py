@@ -809,8 +809,6 @@ with status_col1:
     </div>
     """,
     unsafe_allow_html=True)
-    st.write("KB Active:", st.session_state.get("dynamic_kb_active"))
-    st.write("Chunk Count:", st.session_state.get("dynamic_chunk_count"))
 with status_col2:
 
     st.markdown("""
