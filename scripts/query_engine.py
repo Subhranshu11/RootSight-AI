@@ -216,7 +216,7 @@ def analyze_incident(
     # STEP 2 — SEARCH FAISS
     # -----------------------------------
 
-    top_k = 1
+    top_k = 5
 
     all_chunks = []
 
