@@ -58,7 +58,7 @@ if not st.session_state["authenticated"]:
     }
     
     .stApp{
-        background:#050B18;
+        background: white;
     }
     
     .block-container{
