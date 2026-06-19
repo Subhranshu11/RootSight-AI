@@ -402,10 +402,9 @@ BUTTONS
     border: none;
     transition: 0.3s;
 }
-
-.stButton > button:hover {
-    opacity: 1.3;
-}
+div[data-testid="stButton"] button:hover{
+        background:#e45700 !important;
+    }
 
 /* -----------------------------------
 MAIN HEADER
