@@ -451,7 +451,7 @@ Provide response EXACTLY in this format:
 - Component 1
 - Component 2
 
-## Recommended Remediation
+## Actionable Remediation
 
 IMPORTANT:
 
