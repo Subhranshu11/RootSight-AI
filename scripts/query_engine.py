@@ -296,7 +296,7 @@ def analyze_incident(
 
     for score in retrieved_scores:
 
-        if score <= 1.125:
+        if score <= RELEVANCE_THRESHOLD:
             similar_chunks += 1
 
     print(f"Highly Similar Chunks: {similar_chunks}")
