@@ -216,7 +216,7 @@ def analyze_incident(
     # STEP 2 — SEARCH FAISS
     # -----------------------------------
 
-    top_k = 5
+    top_k = 1
 
     all_chunks = []
 
@@ -303,7 +303,7 @@ def analyze_incident(
     
     if USE_DYNAMIC_REPOSITORY:
 
-        MIN_MATCHES = 5
+        MIN_MATCHES = 1
     
     else:
     
