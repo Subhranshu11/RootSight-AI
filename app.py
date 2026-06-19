@@ -535,12 +535,12 @@ with st.sidebar:
     col1, col2, col3 = st.columns([1,4,1])
 
     with col2:
-        st.image("assets/ai_tree.png", width=220)
+        st.image("assets/ai_tree.png", width=260)
 
     st.markdown(
         """
         <div style='text-align:center; margin-top:0px;'>
-            <div style='font-size:14px; opacity:0.75; margin-top:2px; color:#5B6575;'>
+            <div style='font-size:14px; opacity:0.75; margin-top:0px; color:#5B6575;'>
                 Enterprise Operational Intelligence
             </div>
         </div>
@@ -853,12 +853,9 @@ user_input = st.text_area(
     placeholder="""
 Example:
 
-SAP BI4 Launchpad not opening.
+SAP BI Launchpad not opening.
 SQL Developer is not working.
-Pipeline is not starting and remains in queued state.
-Oracle instance fails to start.
 
-(Press Enter to Analyze • Shift+Enter for new line)
 """
 )
 
@@ -884,7 +881,7 @@ enter_pressed = html(
 
             buttons.forEach(btn => {
 
-                if (btn.innerText.includes('Analyze Incident')) {
+                if (btn.innerText.includes('RootSight Analyze')) {
                     btn.click();
                 }
 
