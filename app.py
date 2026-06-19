@@ -241,14 +241,14 @@ if not st.session_state["authenticated"]:
     
     div[data-baseweb="input"]{
         border:none !important;
-        background:#1E2230 !important;
+        background:#fcf5f0 !important;
         box-shadow:none !important;
         border-radius:30px !important;
     }
     
     div[data-baseweb="input"] > div{
         border:none !important;
-        background:#1E2230 !important;
+        background:#fcf5f0 !important;
         box-shadow:none !important;
         border-radius:30px !important;
     }
