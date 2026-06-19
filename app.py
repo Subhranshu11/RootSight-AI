@@ -280,7 +280,7 @@ if not st.session_state["authenticated"]:
     with col2:
         st.markdown("""
         <div class="welcome-title">
-            Welcome Back!
+            Welcome!
         </div>
         <div class="welcome-subtitle">
             RootSight AI Enterprise Operational Intelligence Platform
@@ -535,15 +535,12 @@ with st.sidebar:
     col1, col2, col3 = st.columns([1,4,1])
 
     with col2:
-        st.image("assets/ai_tree.png", width=180)
+        st.image("assets/ai_tree.png", width=220)
 
     st.markdown(
         """
         <div style='text-align:center; margin-top:0px;'>
-            <div style='font-size:28px; font-weight:700; margin-bottom:2px;'>
-                <span style='color:#FF6200;'>RootSight AI</span>
-            </div>
-            <div style='font-size:13px; opacity:0.75; margin-top:6px; color:#5B6575;'>
+            <div style='font-size:14px; opacity:0.75; margin-top:2px; color:#5B6575;'>
                 Enterprise Operational Intelligence
             </div>
         </div>
