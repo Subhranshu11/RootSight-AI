@@ -303,7 +303,7 @@ def analyze_incident(
     
     if USE_DYNAMIC_REPOSITORY:
 
-        MIN_MATCHES = 1
+        MIN_MATCHES = 5
     
     else:
     
