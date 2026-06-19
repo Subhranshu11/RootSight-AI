@@ -102,7 +102,7 @@ if not st.session_state["authenticated"]:
     .welcome-title{
         font-size:64px;
         font-weight:700;
-        color: #FF6200;
+        color: black;
     
         margin-bottom:0px;   /* was 40px */
         line-height:1;
