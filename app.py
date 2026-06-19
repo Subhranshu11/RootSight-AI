@@ -404,7 +404,7 @@ BUTTONS
 }
 
 .stButton > button:hover {
-    opacity: 0.9;
+    opacity: 1.3;
 }
 
 /* -----------------------------------
