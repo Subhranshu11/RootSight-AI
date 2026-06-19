@@ -257,7 +257,7 @@ if not st.session_state["authenticated"]:
     
     div[data-baseweb="base-input"]{
         border:none !important;
-        background:#1E2230 !important;
+        background:#fcf5f0 !important;
         box-shadow:none !important;
     }
     
