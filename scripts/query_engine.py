@@ -216,11 +216,11 @@ def analyze_incident(
     # STEP 2 — SEARCH FAISS
     # -----------------------------------
 
-    top_k = 1
+    top_k = 3
 
     all_chunks = []
 
-    RELEVANCE_THRESHOLD = 1.125
+    RELEVANCE_THRESHOLD = 1.5
     
     if USE_DYNAMIC_REPOSITORY:
 
@@ -263,10 +263,6 @@ def analyze_incident(
     
             all_chunks.append(
                 active_metadata[idx]
-            )
-    
-            retrieved_scores.append(
-                float(distance)
             )
     
             retrieved_scores.append(
