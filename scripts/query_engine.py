@@ -216,7 +216,7 @@ def analyze_incident(
     # STEP 2 — SEARCH FAISS
     # -----------------------------------
 
-    top_k = 3
+    top_k = 1
 
     all_chunks = []
 
@@ -307,7 +307,7 @@ def analyze_incident(
     
     else:
     
-        MIN_MATCHES = 2
+        MIN_MATCHES = 1
     if (
         best_score > RELEVANCE_THRESHOLD
         or
