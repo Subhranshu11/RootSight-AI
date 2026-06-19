@@ -102,7 +102,7 @@ if not st.session_state["authenticated"]:
     .welcome-title{
         font-size:64px;
         font-weight:700;
-        color:orange;
+        color: #FF6200;
     
         margin-bottom:0px;   /* was 40px */
         line-height:1;
@@ -124,7 +124,7 @@ if not st.session_state["authenticated"]:
     
     .stTextInput > div > div{
         background:white !important;
-        border:0.5px solid black !important;
+        border:none !important;
         box-shadow:none !important;
         border-radius:30px !important;
     }
@@ -132,7 +132,7 @@ if not st.session_state["authenticated"]:
     /* Actual input */
     
     div[data-testid="stTextInput"] input{
-        background:#1E2230 !important;
+        background:#fcf5f0 !important;
         color:black !important;
     
         border:none !important;
