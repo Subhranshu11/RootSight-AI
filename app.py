@@ -535,7 +535,7 @@ with st.sidebar:
     col1, col2, col3 = st.columns([1,4,1])
 
     with col2:
-        st.image("assets/ai_tree.png", width=260)
+        st.image("assets/ai_tree.png", width=290)
 
     st.markdown(
         """
