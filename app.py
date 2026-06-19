@@ -102,7 +102,7 @@ if not st.session_state["authenticated"]:
     .welcome-title{
         font-size:64px;
         font-weight:700;
-        color: black;
+        color: #ff6200;
     
         margin-bottom:0px;   /* was 40px */
         line-height:1;
@@ -234,7 +234,7 @@ if not st.session_state["authenticated"]:
     .welcome-title{
         font-size:64px;
         font-weight:700;
-        color:white;
+        color:#ff6200;
         margin-bottom:0px;
     }
     /* Kill Streamlit input wrapper */
