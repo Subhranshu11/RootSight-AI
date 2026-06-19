@@ -102,7 +102,7 @@ if not st.session_state["authenticated"]:
     .welcome-title{
         font-size:64px;
         font-weight:700;
-        color:white;
+        color:orange;
     
         margin-bottom:0px;   /* was 40px */
         line-height:1;
@@ -123,8 +123,8 @@ if not st.session_state["authenticated"]:
     /* Outer Streamlit container */
     
     .stTextInput > div > div{
-        background:#1E2230 !important;
-        border:none !important;
+        background:white !important;
+        border:0.5px solid black !important;
         box-shadow:none !important;
         border-radius:30px !important;
     }
@@ -133,7 +133,7 @@ if not st.session_state["authenticated"]:
     
     div[data-testid="stTextInput"] input{
         background:#1E2230 !important;
-        color:white !important;
+        color:black !important;
     
         border:none !important;
         outline:none !important;
@@ -157,7 +157,7 @@ if not st.session_state["authenticated"]:
     /* Username / Password Labels */
 
     label[data-testid="stWidgetLabel"]{
-        color:white !important;
+        color:black !important;
         font-size:15px !important;
         font-weight:500 !important;
     }
@@ -166,7 +166,8 @@ if not st.session_state["authenticated"]:
     ----------------------------------- */
     
     div[data-testid="stTextInput"]{
-        border:none !important;
+        border:0.5px solid black !important;
+        
         box-shadow:none !important;
     }
     
@@ -176,7 +177,7 @@ if not st.session_state["authenticated"]:
     /* Remember Me checkbox */
 
     div[data-testid="stCheckbox"] label{
-        color:white !important;
+        color:black !important;
         font-size:14px !important;
     }
     div[data-testid="stCheckbox"] p{
@@ -283,7 +284,7 @@ if not st.session_state["authenticated"]:
             Welcome!
         </div>
         <div class="welcome-subtitle">
-            RootSight AI Enterprise Operational Intelligence Platform
+            Enterprise Operational Intelligence Platform
         </div>
         """, unsafe_allow_html=True)
     
@@ -327,7 +328,7 @@ if not st.session_state["authenticated"]:
                     "Invalid credentials"
                 )
         st.caption(
-            "RootSight AI v1.0 | VectorMinds"
+            "RootSight AI v1.3 | VectorMinds"
         )
     st.stop()
 
