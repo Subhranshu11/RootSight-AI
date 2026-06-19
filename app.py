@@ -166,7 +166,7 @@ if not st.session_state["authenticated"]:
     ----------------------------------- */
     
     div[data-testid="stTextInput"]{
-        border:0.5px solid black !important;
+        border:none !important;
         
         box-shadow:none !important;
     }
@@ -181,7 +181,7 @@ if not st.session_state["authenticated"]:
         font-size:14px !important;
     }
     div[data-testid="stCheckbox"] p{
-        color:white !important;
+        color:black !important;
     }
     div[data-testid="stButton"] button{
         width:100%;
@@ -263,10 +263,7 @@ if not st.session_state["authenticated"]:
     
     /* Remove white focus ring */
     
-    *:focus{
-        outline:none !important;
-        box-shadow:none !important;
-    }
+    
     </style>
     """, unsafe_allow_html=True)
 
